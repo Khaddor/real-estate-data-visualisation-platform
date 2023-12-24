@@ -60,7 +60,7 @@ class ValeurFonciereFixtures extends Fixture
            while (($data = fgetcsv($fp, 1000, "|")) !== false) {
             if ($numberLine !== 0) {
 
-                if ($data[8] == "" || $data[10] == "" || $data[18] == "" || $data[35] == "" || $data[38] == "") {
+                if ($data[8] == "" || $data[10] == "" || $data[18] == "" || $data[35] == "" || $data[38] == "" || $data[36] == "") {
                     continue;
                 }
     
@@ -76,6 +76,7 @@ class ValeurFonciereFixtures extends Fixture
                 $valeurFonciere->setCodeDepartement(intval($data[18]));
                 $valeurFonciere->setCodeTypeLocal(intval($data[35]));
                 $valeurFonciere->setSurface(intval($data[38]));
+                $valeurFonciere->setTypeLocal($data[36]);
                 $manager->persist($valeurFonciere);
 
                 $numberItems++;
