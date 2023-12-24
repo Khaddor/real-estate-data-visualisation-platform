@@ -38,6 +38,11 @@ class ValeurFonciere
     #[Positive]
     protected $codeTypeLocal;
 
+    #[Column(type: 'integer')]
+    #[PositiveOrZero]
+    protected $surface;
+
+
     public function getIdentifiant(): int
     {
         return $this->identifiant;
@@ -68,6 +73,11 @@ class ValeurFonciere
         return $this->codeTypeLocal;
     }
 
+    public function getSurface(): int
+    {
+        return $this->surface;
+    }
+
     public function setDateMutation(\DateTime $dateMutation): void
     {
         $this->dateMutation = $dateMutation;
@@ -91,5 +101,10 @@ class ValeurFonciere
     public function setCodeTypeLocal(int $codeTypeLocal): void
     {
         $this->codeTypeLocal = $codeTypeLocal;
+    }
+
+    public function setSurface(int $surface): void
+    {
+        $this->surface = $surface;
     }
 }
