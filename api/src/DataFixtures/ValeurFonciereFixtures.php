@@ -48,7 +48,7 @@ class ValeurFonciereFixtures extends Fixture
         foreach($files as $file => $_){
            $outName = "$output_dir/$file.txt";
 
-           $maxInsertions= 50000;
+           $maxInsertions= 100;
            $fp = fopen($outName, 'r'); 
 
 
@@ -59,22 +59,33 @@ class ValeurFonciereFixtures extends Fixture
            echo "debut de l'insertion du fichier $outName ...\n";
            while (($data = fgetcsv($fp, 1000, "|")) !== false) {
             if ($numberLine !== 0) {
+
+                if ($data[8] == "" || $data[10] == "" || $data[18] == "" || $data[35] == "" || $data[38] == "") {
+                    continue;
+                }
+    
+                // Pas de surface. Non exploitable
+                if ($data[38] == "0") {
+                    continue;
+                }
+
                 $valeurFonciere = new ValeurFonciere();
                 $valeurFonciere->setDateMutation(\DateTime::createFromFormat('d/m/Y', $data[8]));
                 $valeurFonciere->setTypeMutation(intval($data[9]));
                 $valeurFonciere->setValeurFonciere(floatval(str_replace(',', '.', $data[10])));
                 $valeurFonciere->setCodeDepartement(intval($data[18]));
                 $valeurFonciere->setCodeTypeLocal(intval($data[35]));
+                $valeurFonciere->setSurface(intval($data[38]));
                 $manager->persist($valeurFonciere);
 
                 $numberItems++;
-                
+
                 
                 if ($numberItems % 10000 == 0)  {
                     echo("Nombre d'éléments enregistrés : " . $numberItems . "\n");
                     $manager->flush();
                     $manager->clear();
-                    // Arrêter la boucle après avoir enregistré les 1000 premières lignes
+                    // Arrêter la boucle après avoir enregistré les 10000 premières lignes
                     //break;
                 }
 
