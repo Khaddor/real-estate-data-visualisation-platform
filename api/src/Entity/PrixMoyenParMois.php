@@ -4,8 +4,15 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\State\PrixMoyenParMoisProvider;
 
-#[ApiResource]
+#[ApiResource(operations: [
+    new GetCollection(
+        uriTemplate: 'prix_moyen_par_mois',
+        provider: PrixMoyenParMoisProvider::class,
+        description: 'Récupère le prix moyen par mètre carré pour un mois donné'
+    )
+])]
 class PrixMoyenParMois
 {
 
