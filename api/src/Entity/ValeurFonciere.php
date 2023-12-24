@@ -43,7 +43,7 @@ class ValeurFonciere
         return $this->identifiant;
     }
 
-    public function getDateMutation(): \DateTimeImmutable
+    public function getDateMutation(): \DateTime
     {
         return $this->dateMutation;
     }
@@ -66,5 +66,30 @@ class ValeurFonciere
     public function getCodeTypeLocal(): int
     {
         return $this->codeTypeLocal;
+    }
+
+    public function setDateMutation(\DateTime $dateMutation): void
+    {
+        $this->dateMutation = $dateMutation;
+    }
+
+    public function setTypeMutation(int $typeMutation): void
+    {
+        $this->typeMutation = $typeMutation;
+    }
+
+    public function setValeurFonciere(float $valeurFonciere): void
+    {
+        $this->valeurFonciere = $valeurFonciere;
+    }
+
+    public function setCodeDepartement(int $codeDepartement): void
+    {
+        $this->codeDepartement = $codeDepartement;
+    }
+
+    public function setCodeTypeLocal(int $codeTypeLocal): void
+    {
+        $this->codeTypeLocal = $codeTypeLocal;
     }
 }
