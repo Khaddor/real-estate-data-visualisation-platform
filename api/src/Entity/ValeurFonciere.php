@@ -38,10 +38,24 @@ class ValeurFonciere
     #[Positive]
     protected $codeTypeLocal;
 
+    #[Column(type: 'string', nullable: true)]
+    protected $typeLocal;
+
     #[Column(type: 'integer')]
     #[PositiveOrZero]
     protected $surface;
 
+
+
+    public function getTypeLocal(): ?string
+    {
+        return $this->typeLocal;
+    }
+
+    public function setTypeLocal(?string $typeLocal): void
+    {
+        $this->typeLocal = $typeLocal;
+    }
 
     public function getIdentifiant(): int
     {
