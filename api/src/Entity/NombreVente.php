@@ -10,6 +10,9 @@ use App\State\NombredeVenteProvider;
 
 #[ApiResource(operations: [
     new GetCollection(
+        uriTemplate: 'nombre_vente',
+    ),
+    new GetCollection(
         uriTemplate: 'nombreVentes/{type}/{debut}/{fin}',
         openapiContext: [
             'parameters' => [
@@ -49,7 +52,9 @@ use App\State\NombredeVenteProvider;
         ],
         description: 'Récupère le nombre de ventes entre deux dates (jour, mois, année)',
         provider:  NombredeVenteProvider::class,
-    )
+    ),
+
+    
 ])]
 
 class NombreVente

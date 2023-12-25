@@ -9,6 +9,9 @@ use App\State\VenteParRegionProvider;
 
 #[ApiResource(operations: [
     new GetCollection(
+        uriTemplate: 'ventes_par_region',
+    ),
+    new GetCollection(
         uriTemplate: 'ventes_par_region/{annee}',
         openapiContext: [
             'parameters' => [
