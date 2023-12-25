@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\State\VenteParRegionProvider;
 
 
 #[ApiResource(operations: [
@@ -23,8 +24,8 @@ use ApiPlatform\Metadata\GetCollection;
                 ]
             ]
         ],
+        provider: VenteParRegionProvider::class,
         
-    
     )
 ])]
 
