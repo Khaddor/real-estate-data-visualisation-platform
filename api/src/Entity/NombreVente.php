@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\State\NombredeVenteProvider;
 
 
 
@@ -46,7 +47,8 @@ use ApiPlatform\Metadata\GetCollection;
                 ]
             ]
         ],
-        description: 'Récupère le nombre de ventes entre deux dates (jour, mois, année)'
+        description: 'Récupère le nombre de ventes entre deux dates (jour, mois, année)',
+        provider:  NombredeVenteProvider::class,
     )
 ])]
 
