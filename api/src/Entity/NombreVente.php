@@ -6,7 +6,50 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 
 
-#[ApiResource]
+
+#[ApiResource(operations: [
+    new GetCollection(
+        uriTemplate: 'nombreVentes/{type}/{debut}/{fin}',
+        openapiContext: [
+            'parameters' => [
+                [
+                    'name' => 'type',
+                    'in' => 'path',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'string',
+                        'enum' => ['jour', 'mois', 'année']
+                    ],
+                    'description' => 'La manière dont le nombre de ventes doit être regroupé'
+                ],
+                [
+                    'name' => 'debut',
+                    'in' => 'path',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'string',
+                        'format' => 'date',
+                    ],
+                    'example' => '2023-12-25',
+                    'description' => 'La date de début de la plage de dates, au format "AAAA-MM-JJ"'
+                ],
+                [
+                    'name' => 'fin',
+                    'in' => 'path',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'string',
+                        'format' => 'date',
+                    ],
+                    'example' => '2023-12-25',
+                    'description' => 'La date de fin de la plage de dates, au format "AAAA-MM-JJ"'
+                ]
+            ]
+        ],
+        description: 'Récupère le nombre de ventes entre deux dates (jour, mois, année)'
+    )
+])]
+
 class NombreVente
 {
     // la date soit par mois soit année par semaine
