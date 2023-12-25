@@ -48,7 +48,7 @@ class ValeurFonciereFixtures extends Fixture
         foreach($files as $file => $_){
            $outName = "$output_dir/$file.txt";
 
-           $maxInsertions= 100000;
+           $maxInsertions= 10000;
            $fp = fopen($outName, 'r'); 
 
 
@@ -69,9 +69,13 @@ class ValeurFonciereFixtures extends Fixture
                     continue;
                 }
 
+                if($numberItems >= $maxInsertions){
+                    break;
+                }
+
                 $valeurFonciere = new ValeurFonciere();
                 $valeurFonciere->setDateMutation(\DateTime::createFromFormat('d/m/Y', $data[8]));
-                $valeurFonciere->setTypeMutation(intval($data[9]));
+                $valeurFonciere->setTypeMutation($data[9]);
                 $valeurFonciere->setValeurFonciere(floatval(str_replace(',', '.', $data[10])));
                 $valeurFonciere->setCodeDepartement(intval($data[18]));
                 $valeurFonciere->setCodeTypeLocal(intval($data[35]));
@@ -90,9 +94,7 @@ class ValeurFonciereFixtures extends Fixture
                     //break;
                 }
 
-                if($numberItems >= $maxInsertions){
-                    break;
-                }
+                
             }
 
             $numberLine++;

@@ -22,7 +22,7 @@ class ValeurFonciere
     #[Column(type: 'date')]
     protected $dateMutation;
 
-    #[Column(type: 'integer')]
+    #[Column(type: 'string')]
     #[Positive]
     protected $typeMutation;
 
@@ -97,7 +97,7 @@ class ValeurFonciere
         $this->dateMutation = $dateMutation;
     }
 
-    public function setTypeMutation(int $typeMutation): void
+    public function setTypeMutation(string $typeMutation): void
     {
         $this->typeMutation = $typeMutation;
     }
