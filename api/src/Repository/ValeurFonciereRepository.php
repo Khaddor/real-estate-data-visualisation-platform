@@ -76,7 +76,7 @@ class ValeurFonciereRepository extends ServiceEntityRepository
             ->setParameter('year', $year)
             ->setParameter('typeOfMutation', 'Vente')
             ->groupBy('region')
-            ->orderBy('numberSales');
+            ->orderBy('nombreVente');
         return $queryBuilder->getQuery()->getResult();
     }
 
