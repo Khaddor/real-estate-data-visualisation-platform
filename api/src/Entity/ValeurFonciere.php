@@ -30,9 +30,9 @@ class ValeurFonciere
     #[PositiveOrZero]
     protected $valeurFonciere;
 
-    #[Column(type: 'integer', length: 3)]
-    #[Positive]
-    protected $codeDepartement;
+    #[Column(type: 'string')]
+    protected $region;
+
 
 
 
@@ -42,6 +42,8 @@ class ValeurFonciere
     #[Column(type: 'integer')]
     #[PositiveOrZero]
     protected $surface;
+
+
 
 
 
@@ -75,11 +77,10 @@ class ValeurFonciere
         return $this->valeurFonciere;
     }
 
-    public function getCodeDepartement(): int
+    public function getRegion(): string
     {
-        return $this->codeDepartement;
+        return $this->region;
     }
-
 
 
     public function getSurface(): int
@@ -102,9 +103,9 @@ class ValeurFonciere
         $this->valeurFonciere = $valeurFonciere;
     }
 
-    public function setCodeDepartement(int $codeDepartement): void
+    public function setRegion(string $region): void
     {
-        $this->codeDepartement = $codeDepartement;
+        $this->region = $region;
     }
 
 
