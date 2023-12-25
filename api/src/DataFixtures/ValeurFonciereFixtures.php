@@ -11,7 +11,23 @@ class ValeurFonciereFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         ini_set('memory_limit', '8192M');
-        $file = fopen('https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20231010-093059/valeursfoncieres-2022.txt', 'r');
+        // $file = fopen('https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20231010-093059/valeursfoncieres-2022.txt', 'r');
+
+        $fileRegions = fopen(dirname(__DIR__) . '/Data/regions.txt',  'r');
+
+        // skip first line
+        fgets($fileRegions);
+        while (($lineRegion = fgets($fileRegions)) !== false) {
+            $values = explode(',', $lineRegion);
+            $regionMapping[strval($values[0])] = str_replace("\r\n", "", $values[2]);
+        }
+
+        // print $regionMapping[];
+        foreach ($regionMapping as $key => $value) {
+            echo "$key => $value\n";
+        }
+      
+
 
         $output_dir = dirname(__DIR__) . '/Data';
 
@@ -60,7 +76,7 @@ class ValeurFonciereFixtures extends Fixture
            while (($data = fgetcsv($fp, 1000, "|")) !== false) {
             if ($numberLine !== 0) {
 
-                if ($data[8] == "" || $data[10] == "" || $data[18] == "" || $data[35] == "" || $data[38] == "" || $data[36] == "") {
+                if ($data[8] == "" || $data[10] == "" || $data[18] == ""  || $data[38] == "" || $data[36] == "") {
                     continue;
                 }
     
@@ -77,9 +93,9 @@ class ValeurFonciereFixtures extends Fixture
                 $valeurFonciere->setDateMutation(\DateTime::createFromFormat('d/m/Y', $data[8]));
                 $valeurFonciere->setTypeMutation($data[9]);
                 $valeurFonciere->setValeurFonciere(floatval(str_replace(',', '.', $data[10])));
-                $valeurFonciere->setCodeDepartement(intval($data[18]));
                 $valeurFonciere->setSurface(intval($data[38]));
                 $valeurFonciere->setTypeLocal($data[36]);
+                $valeurFonciere->setRegion($regionMapping[strval($data[18])]);
                 $manager->persist($valeurFonciere);
 
                 $numberItems++;
