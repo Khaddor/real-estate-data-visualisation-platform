@@ -11,6 +11,9 @@ use App\State\NombredeVenteProvider;
 #[ApiResource(operations: [
     new GetCollection(
         uriTemplate: 'nombre_vente',
+        provider:  NombredeVenteProvider::class,
+        description: 'Récupère le nombre de ventes entre entre 2018 - 2023',
+       
     ),
     new GetCollection(
         uriTemplate: 'nombreVentes/{type}/{debut}/{fin}',

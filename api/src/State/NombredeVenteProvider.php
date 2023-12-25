@@ -21,10 +21,14 @@ class NombredeVenteProvider implements ProviderInterface
 
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): object|array|null
     {
-        
-        $results = $this->ValeurFonciereRepository->findNombreVenteParDate($uriVariables['type'], $uriVariables['debut'], $uriVariables['fin']);
+        $type = isset($uriVariables['type']) ? $uriVariables['type'] : 'mois';
+        $debut = isset($uriVariables['debut']) ? $uriVariables['debut'] : '2018-01-01';
+        $fin = isset($uriVariables['fin']) ? $uriVariables['fin'] : '2023-12-31';
+
+
+        $results = $this->ValeurFonciereRepository->findNombreVenteParDate($type, $debut, $fin);
         $format = '';
-        switch ($uriVariables['type'])
+        switch ($type)
         {
             case 'jour':
                 $format = 'Y-m-d';
