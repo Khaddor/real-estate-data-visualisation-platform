@@ -26,7 +26,7 @@ class ValeurFonciereRepository extends ServiceEntityRepository
             ->andWhere('lv.valeurFonciere > 0')
             ->andWhere('lv.surface > 0')
             ->setParameter('format', 'YYYY-MM')
-            ->setParameter('typeOfSale', 0)
+            ->setParameter('typeOfSale', 'Vente')
             ->setParameter('apartment', 'Appartement')
             ->setParameter('house', 'Maison')
             ->groupBy('date')
@@ -57,13 +57,29 @@ class ValeurFonciereRepository extends ServiceEntityRepository
             ->where('lv.typeMutation = :typeOfVente')
             ->andWhere('lv.dateMutation BETWEEN :debut AND :fin')
             ->setParameter('format', $format)
-            ->setParameter('typeOfVente', 0)
+            ->setParameter('typeOfVente', 'Vente')
             ->setParameter('debut', $startDate)
             ->setParameter('fin', $endDate)
             ->groupBy('date')
             ->orderBy('date');
         return $queryBuilder->getQuery()->getResult();
     }
+
+    public function findVentesParRegion(int $year)
+    {
+        $queryBuilder = $this->createQueryBuilder('lv')
+            ->select('lv.region as region,
+            COUNT(lv.typeMutation) as nombreVente')
+            ->where('DATE_FORMAT(lv.dateMutation, :format) = :year')
+            ->andWhere('lv.typeMutation = :typeOfMutation')
+            ->setParameter('format', 'YYYY')
+            ->setParameter('year', $year)
+            ->setParameter('typeOfMutation', 'Vente')
+            ->groupBy('region')
+            ->orderBy('numberSales');
+        return $queryBuilder->getQuery()->getResult();
+    }
+
 
 
 
