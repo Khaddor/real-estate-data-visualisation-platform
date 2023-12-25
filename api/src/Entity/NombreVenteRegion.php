@@ -6,7 +6,28 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 
 
-#[ApiResource]
+#[ApiResource(operations: [
+    new GetCollection(
+        uriTemplate: 'ventes_par_region/{annee}',
+        openapiContext: [
+            'parameters' => [
+                [
+                    'name' => 'annee',
+                    'in' => 'path',
+                    'required' => true,
+                    'schema' => [
+                        'type' => 'integer'
+                    ],
+                    'example' => '2023',
+                    'description' => 'L\'année pour laquelle les données de ventes doivent être récupérées'
+                ]
+            ]
+        ],
+        
+    
+    )
+])]
+
 class NombreVenteRegion
 {
     // la region
