@@ -11,7 +11,6 @@ class ValeurFonciereFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         ini_set('memory_limit', '8192M');
-        // $file = fopen('https://static.data.gouv.fr/resources/demandes-de-valeurs-foncieres/20231010-093059/valeursfoncieres-2022.txt', 'r');
 
         $fileRegions = fopen(dirname(__DIR__) . '/Data/regions.txt',  'r');
 
@@ -21,12 +20,6 @@ class ValeurFonciereFixtures extends Fixture
             $values = explode(',', $lineRegion);
             $regionMapping[strval($values[0])] = str_replace("\r\n", "", $values[2]);
         }
-
-        // print $regionMapping[];
-        foreach ($regionMapping as $key => $value) {
-            echo "$key => $value\n";
-        }
-      
 
 
         $output_dir = dirname(__DIR__) . '/Data';
@@ -64,7 +57,7 @@ class ValeurFonciereFixtures extends Fixture
         foreach($files as $file => $_){
            $outName = "$output_dir/$file.txt";
 
-           $maxInsertions= 10000;
+           $maxInsertions= 200000;
            $fp = fopen($outName, 'r'); 
 
 
@@ -85,10 +78,7 @@ class ValeurFonciereFixtures extends Fixture
                     continue;
                 }
 
-                if($numberItems >= $maxInsertions){
-                    break;
-                }
-
+                
                 $valeurFonciere = new ValeurFonciere();
                 $valeurFonciere->setDateMutation(\DateTime::createFromFormat('d/m/Y', $data[8]));
                 $valeurFonciere->setTypeMutation($data[9]);
@@ -105,9 +95,12 @@ class ValeurFonciereFixtures extends Fixture
                     echo("Nombre d'éléments enregistrés : " . $numberItems . "\n");
                     $manager->flush();
                     $manager->clear();
-                    // Arrêter la boucle après avoir enregistré les 10000 premières lignes
-                    //break;
                 }
+
+                if($numberItems >= $maxInsertions){
+                    break;
+                }
+
 
                 
             }
