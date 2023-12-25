@@ -34,9 +34,7 @@ class ValeurFonciere
     #[Positive]
     protected $codeDepartement;
 
-    #[Column(type: 'integer')]
-    #[Positive]
-    protected $codeTypeLocal;
+
 
     #[Column(type: 'string', nullable: true)]
     protected $typeLocal;
@@ -82,10 +80,7 @@ class ValeurFonciere
         return $this->codeDepartement;
     }
 
-    public function getCodeTypeLocal(): int
-    {
-        return $this->codeTypeLocal;
-    }
+
 
     public function getSurface(): int
     {
@@ -112,10 +107,6 @@ class ValeurFonciere
         $this->codeDepartement = $codeDepartement;
     }
 
-    public function setCodeTypeLocal(int $codeTypeLocal): void
-    {
-        $this->codeTypeLocal = $codeTypeLocal;
-    }
 
     public function setSurface(int $surface): void
     {

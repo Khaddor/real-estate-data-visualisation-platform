@@ -78,7 +78,6 @@ class ValeurFonciereFixtures extends Fixture
                 $valeurFonciere->setTypeMutation($data[9]);
                 $valeurFonciere->setValeurFonciere(floatval(str_replace(',', '.', $data[10])));
                 $valeurFonciere->setCodeDepartement(intval($data[18]));
-                $valeurFonciere->setCodeTypeLocal(intval($data[35]));
                 $valeurFonciere->setSurface(intval($data[38]));
                 $valeurFonciere->setTypeLocal($data[36]);
                 $manager->persist($valeurFonciere);
