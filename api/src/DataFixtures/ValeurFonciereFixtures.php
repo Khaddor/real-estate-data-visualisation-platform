@@ -48,7 +48,7 @@ class ValeurFonciereFixtures extends Fixture
         foreach($files as $file => $_){
            $outName = "$output_dir/$file.txt";
 
-           $maxInsertions= 100;
+           $maxInsertions= 100000;
            $fp = fopen($outName, 'r'); 
 
 
