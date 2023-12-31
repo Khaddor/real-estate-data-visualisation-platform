@@ -19,3 +19,8 @@
 .phpunit.result.cache
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
+
+
+### ignore all data files 
+/src/Data/*.txt
+!/src/Data/regions.txt
