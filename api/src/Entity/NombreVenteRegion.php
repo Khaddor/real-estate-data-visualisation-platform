@@ -5,15 +5,17 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\State\VenteParRegionProvider;
+use ApiPlatform\Metadata\Get;
 
 
-#[ApiResource(operations: [
-    new GetCollection(
-        uriTemplate: 'ventes_par_region',
-    ),
-    new GetCollection(
+#[ApiResource(
+    formats: ['json', 'jsonld'],
+    operations: [
+    new Get(
         uriTemplate: 'ventes_par_region/{annee}',
         openapiContext: [
+            'summary' => 'Récupère le nombre de ventes par région pour une année donnée',
+            'description' => 'Récupère le nombre de ventes par région pour une année donnée',
             'parameters' => [
                 [
                     'name' => 'annee',

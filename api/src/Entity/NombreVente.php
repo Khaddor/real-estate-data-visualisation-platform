@@ -5,19 +5,30 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\State\NombredeVenteProvider;
+use ApiPlatform\Metadata\Get;
 
 
 
-#[ApiResource(operations: [
+#[ApiResource(
+    formats: ['json', 'jsonld'],
+    operations: [
+        /*
     new GetCollection(
         uriTemplate: 'nombre_vente',
         provider:  NombredeVenteProvider::class,
         description: 'Récupère le nombre de ventes entre entre 2018 - 2023',
-       
+        openapiContext: [
+            'summary' => 'Récupère le nombre de ventes par mois entre 2018 - 2023 sans pagination',
+            'description' => 'Récupère le nombre de ventes par mois  entre 2018 - 2023 sans pagination',
+        ],
+        //paginationEnabled: false,
     ),
-    new GetCollection(
+    */
+    new Get(
         uriTemplate: 'nombreVentes/{type}/{debut}/{fin}',
         openapiContext: [
+            'summary' => 'Récupère le nombre de ventes entre deux dates (jour, mois, année)',
+            'description' => 'Récupère le nombre de ventes entre deux dates (jour, mois, année)',
             'parameters' => [
                 [
                     'name' => 'type',
@@ -37,7 +48,7 @@ use App\State\NombredeVenteProvider;
                         'type' => 'string',
                         'format' => 'date',
                     ],
-                    'example' => '2023-12-25',
+                    'example' => '2018-01-01',
                     'description' => 'La date de début de la plage de dates, au format "AAAA-MM-JJ"'
                 ],
                 [
@@ -51,12 +62,12 @@ use App\State\NombredeVenteProvider;
                     'example' => '2023-12-25',
                     'description' => 'La date de fin de la plage de dates, au format "AAAA-MM-JJ"'
                 ]
-            ]
+                ],
+
         ],
         description: 'Récupère le nombre de ventes entre deux dates (jour, mois, année)',
         provider:  NombredeVenteProvider::class,
     ),
-
     
 ])]
 

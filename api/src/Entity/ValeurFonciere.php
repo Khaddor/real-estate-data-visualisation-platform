@@ -10,14 +10,14 @@ use Doctrine\ORM\Mapping\Id;
 use Symfony\Component\Validator\Constraints\Positive;
 use Symfony\Component\Validator\Constraints\PositiveOrZero;
 
-#[ApiResource]
+#[ApiResource ]
 #[Entity]
 class ValeurFonciere
 {
     #[Id]
     #[GeneratedValue]
     #[Column(type: 'integer')]
-    protected $identifiant;
+    protected $identifiant; 
 
     #[Column(type: 'date')]
     protected $dateMutation;
