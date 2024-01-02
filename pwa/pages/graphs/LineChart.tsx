@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 
 interface DataPoint {
   date: string;
-  averagePrice: number;
+  prixMoyen: number;
 }
 
 interface LineChartProps {
@@ -41,18 +41,18 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     const y = d3.scaleLinear().range([height, 0]);
 
     data.forEach(d => {
-      d.averagePrice = +d.averagePrice; // Convert averagePrice to number
+      d.prixMoyen = +d.prixMoyen; // Convert averagePrice to number
     });
 
     console.log("Parsed Dates:", data.map(d => new Date(d.date))); // Log parsed dates
 
     x.domain(d3.extent(data, d => new Date(d.date) as Date) as [Date, Date]);
-    y.domain([0, d3.max(data, d => d.averagePrice) as number]);
+    y.domain([0, d3.max(data, d => d.prixMoyen) as number]);
 
     // Create line function
     const line = d3.line<DataPoint>()
       .x(d => x(new Date(d.date) as Date))
-      .y(d => y(d.averagePrice));
+      .y(d => y(d.prixMoyen));
 
     // Add X Axis
     svg.append("g")
