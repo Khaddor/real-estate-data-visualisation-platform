@@ -94,9 +94,9 @@ const LineChartComponent = () => {
         }
 
         const result = await response.json();
-        const rawData = result['hydra:member'];
-        console.log("Raw Data:", rawData);
-        setData(rawData);
+        console.log("result Data:", result);
+
+        setData(result);
         setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
