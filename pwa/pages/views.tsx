@@ -1,4 +1,6 @@
+import React from "react";
 import Head from "next/head";
+import LineChartComponent from "./graphs/LineChart";
 
 export default function Views() {
   return (
@@ -12,6 +14,9 @@ export default function Views() {
         </div>
 
         {/* Charts components */}
+
+        {/* Line Chart */}
+        <LineChartComponent />
 
       </section>
     </div>
