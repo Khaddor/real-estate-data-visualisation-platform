@@ -84,13 +84,45 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 3)
-      .attr("d", line)
+      .on("mouseover", () => {
+        setTooltipVisible(true);
+        d3.select(".line").attr("stroke", "blue").attr("stroke-width", 5); // Change color and thickness on hover
+      })
+      .on("mousemove", showTooltip)
+      .on("mouseout", () => {
+        setTooltipVisible(false);
+        d3.select(".line").attr("stroke", "steelblue").attr("stroke-width", 3); // Revert to original color and thickness
+      })
       .transition() // Add transition
       .duration(2000) // Adjust duration as needed
       .ease(d3.easeLinear)
       .attr("d", line);
 
-    
+      function showTooltip(event: MouseEvent) {
+        if (!tooltipRef.current) return;
+      
+        const bisectDate = d3.bisector<DataPoint, Date>((d: DataPoint) => new Date(d.date) as Date).left;
+        const mouseX = d3.pointer(event)[0];
+        const invertedX = x.invert(mouseX);
+      
+        const index = bisectDate(data, invertedX, 1);
+        const dataPoint = data[index];
+      
+        if (!dataPoint) return;
+      
+        const formatTime = d3.timeFormat("%Y-%m");
+      
+        const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(dataPoint.date))}<br/><strong>Average Price:</strong> ${(dataPoint.prixMoyen / 1000).toFixed(2)}K`;
+      
+        tooltipRef.current.innerHTML = tooltipContent;
+      
+        // Position the tooltip close to the mouse
+        const tooltipWidth = tooltipRef.current.offsetWidth;
+        const tooltipHeight = tooltipRef.current.offsetHeight;
+        tooltipRef.current.style.top = `${event.clientY - tooltipHeight}px`;
+        tooltipRef.current.style.left = `${event.clientX - tooltipWidth / 2}px`;
+      }
+      
   }, [data]);
 
   return (
