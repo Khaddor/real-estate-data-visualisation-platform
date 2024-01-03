@@ -12,6 +12,17 @@ interface PieChartProps {
 
 const PieChart1: React.FC<PieChartProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  // Calculate total sales
+  const totalSales = data.reduce(
+    (sum, { nombreVente }) => sum + nombreVente,
+    0
+  );
+
+  // Add a salesPercentage property to each region's data
+  const dataWithPercentages = data.map((item) => ({
+    ...item,
+    salesPercentage: ((item.nombreVente / totalSales) * 100).toFixed(2), // Keep two decimals and convert to string
+  }));
 
   useEffect(() => {
     if (!Array.isArray(data) || data.length === 0) {
@@ -44,9 +55,9 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
     const pie = d3
       .pie<VentesData>()
       .sort(null)
-      .value((d) => d.nombreVente);
+      .value((d) => d.salesPercentage);
 
-    const data_ready = pie(data);
+    const data_ready = pie(dataWithPercentages);
 
     const arcGenerator = d3
       .arc<d3.PieArcDatum<VentesData>>()
@@ -69,7 +80,7 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .selectAll("text")
       .data(data_ready)
       .join("text")
-      .text((d) => `${d.data.region} (${d.data.nombreVente}%)`)
+      .text((d) => `${d.data.region} (${d.data.salesPercentage}%)`)
       .attr("transform", (d) => `translate(${arcGenerator.centroid(d)})`)
       .style("text-anchor", "middle")
       .style("font-size", 4);
