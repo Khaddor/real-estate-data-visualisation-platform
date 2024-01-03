@@ -26,7 +26,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     d3.select(svgRef.current).selectAll("*").remove();
 
     // Set up SVG dimensions
-    const margin = { top: 20, right: 20, bottom: 50, left: 50 }; // Increased bottom margin for Y-axis labels
+    const margin = { top: 20, right: 20, bottom: 50, left: 50 };
     const width = 1000 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -46,7 +46,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       d.prixMoyen = +d.prixMoyen; // Convert averagePrice to number
     });
 
-    console.log("Parsed Dates:", data.map(d => new Date(d.date))); // Log parsed dates
+    console.log("Parsed Dates:", data.map(d => new Date(d.date)));
 
     x.domain(d3.extent(data, d => new Date(d.date) as Date) as [Date, Date]);
     y.domain([0, d3.max(data, d => d.prixMoyen) as number]);
@@ -73,32 +73,39 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       .enter().append("text")
       .attr("transform", d => `translate(-10, ${y(d)})`)
       .attr("dy", -2)
-      .style("font-size", "10px") // Adjust font size
+      .style("font-size", "10px")
       .style("text-anchor", "end")
       .text(d => (d / 1000).toFixed(2) + "k");
 
-    // Add the line with increased thickness and transition
-    svg.append("path")
+    // Measure the length of the path
+    const totalLength = svg.append("path")
       .datum(data)
       .attr("class", "line")
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 3)
-      .transition() // Add transition
-      .duration(2000) // Adjust duration as needed
+      .attr("d", line)
+      .node()!.getTotalLength();
+
+    // Set up the starting position
+    svg.select(".line")
+      .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+      .duration(2000)
       .ease(d3.easeLinear)
-      .attr("d", line);
+      .attr("stroke-dashoffset", 0);
 
     // Add event listeners for hover effects
     svg.select(".line")
       .on("mouseover", () => {
         setTooltipVisible(true);
-        d3.select(".line").attr("stroke", "blue").attr("stroke-width", 5); // Change color and thickness on hover
+        d3.select(".line").attr("stroke", "blue").attr("stroke-width", 5); 
       })
       .on("mousemove", showTooltip)
       .on("mouseout", () => {
         setTooltipVisible(false);
-        d3.select(".line").attr("stroke", "steelblue").attr("stroke-width", 3); // Revert to original color and thickness
+        d3.select(".line").attr("stroke", "steelblue").attr("stroke-width", 3); 
       });
 
     function showTooltip(event: MouseEvent) {
@@ -121,12 +128,11 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 
       const tooltipWidth = tooltipRef.current.offsetWidth;
       const tooltipHeight = tooltipRef.current.offsetHeight;
-      const mouseXOffset = 10; 
-      const mouseYOffset = 10; 
+      const mouseXOffset = 10;
+      const mouseYOffset = 10;
       tooltipRef.current.style.top = `${event.clientY - mouseYOffset}px`;
       tooltipRef.current.style.left = `${event.clientX + mouseXOffset}px`;
     }
-
   }, [data]);
 
   return (
