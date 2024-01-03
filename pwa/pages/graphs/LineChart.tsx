@@ -26,7 +26,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     d3.select(svgRef.current).selectAll("*").remove();
 
     // Set up SVG dimensions
-    const margin = { top: 20, right: 20, bottom: 50, left: 50 }; // Increased bottom margin for Y-axis labels
+    const margin = { top: 20, right: 20, bottom: 50, left: 50 };
     const width = 1000 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
@@ -46,7 +46,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       d.prixMoyen = +d.prixMoyen; // Convert averagePrice to number
     });
 
-    console.log("Parsed Dates:", data.map(d => new Date(d.date))); // Log parsed dates
+    console.log("Parsed Dates:", data.map(d => new Date(d.date)));
 
     x.domain(d3.extent(data, d => new Date(d.date) as Date) as [Date, Date]);
     y.domain([0, d3.max(data, d => d.prixMoyen) as number]);
@@ -55,6 +55,16 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
     const line = d3.line<DataPoint>()
       .x(d => x(new Date(d.date) as Date))
       .y(d => y(d.prixMoyen));
+
+    // Add title to the chart
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top + 45)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .style("text-decoration", "underline")
+    .text("Prix Moyen par Mois");
+
 
     // Add X Axis
     svg.append("g")
@@ -68,61 +78,71 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
 
     // Add Y Axis labels
     svg.append("g")
-    .selectAll("text")
-    .data(y.ticks(5))
-    .enter().append("text")
-    .attr("transform", d => `translate(-10, ${y(d)})`)
-    .attr("dy", -2)
-    .style("font-size", "10px") // Adjust font size
-    .style("text-anchor", "end")
-    .text(d => (d / 1000).toFixed(2) + "k");
+      .selectAll("text")
+      .data(y.ticks(5))
+      .enter().append("text")
+      .attr("transform", d => `translate(-10, ${y(d)})`)
+      .attr("dy", -2)
+      .style("font-size", "10px")
+      .style("text-anchor", "end")
+      .text(d => (d / 1000).toFixed(2) + "k");
 
-    // Add the line with increased thickness and transition
-    svg.append("path")
+    // Measure the length of the path
+    const totalLength = svg.append("path")
       .datum(data)
       .attr("class", "line")
       .attr("fill", "none")
       .attr("stroke", "steelblue")
       .attr("stroke-width", 3)
+      .attr("d", line)
+      .node()!.getTotalLength();
+
+    // Set up the starting position
+    svg.select(".line")
+      .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
+      .attr("stroke-dashoffset", totalLength)
+      .transition()
+      .duration(3000)
+      .ease(d3.easeLinear)
+      .attr("stroke-dashoffset", 0);
+
+    // Add event listeners for hover effects
+    svg.select(".line")
       .on("mouseover", () => {
         setTooltipVisible(true);
-        d3.select(".line").attr("stroke", "blue").attr("stroke-width", 5); // Change color and thickness on hover
+        d3.select(".line").attr("stroke", "blue").attr("stroke-width", 5); 
       })
       .on("mousemove", showTooltip)
       .on("mouseout", () => {
         setTooltipVisible(false);
-        d3.select(".line").attr("stroke", "steelblue").attr("stroke-width", 3); // Revert to original color and thickness
-      })
-      .transition() // Add transition
-      .duration(2000) // Adjust duration as needed
-      .ease(d3.easeLinear)
-      .attr("d", line);
+        d3.select(".line").attr("stroke", "steelblue").attr("stroke-width", 3); 
+      });
 
-      function showTooltip(event: MouseEvent) {
-        if (!tooltipRef.current) return;
-      
-        const bisectDate = d3.bisector<DataPoint, Date>((d: DataPoint) => new Date(d.date) as Date).left;
-        const mouseX = d3.pointer(event)[0];
-        const invertedX = x.invert(mouseX);
-      
-        const index = bisectDate(data, invertedX, 1);
-        const dataPoint = data[index];
-      
-        if (!dataPoint) return;
-      
-        const formatTime = d3.timeFormat("%Y-%m");
-      
-        const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(dataPoint.date))}<br/><strong>Average Price:</strong> ${(dataPoint.prixMoyen / 1000).toFixed(2)}K`;
-      
-        tooltipRef.current.innerHTML = tooltipContent;
-      
-        // Position the tooltip close to the mouse
-        const tooltipWidth = tooltipRef.current.offsetWidth;
-        const tooltipHeight = tooltipRef.current.offsetHeight;
-        tooltipRef.current.style.top = `${event.clientY - tooltipHeight}px`;
-        tooltipRef.current.style.left = `${event.clientX - tooltipWidth / 2}px`;
-      }
-      
+    function showTooltip(event: MouseEvent) {
+      if (!tooltipRef.current) return;
+
+      const bisectDate = d3.bisector<DataPoint, Date>((d: DataPoint) => new Date(d.date) as Date).left;
+      const mouseX = d3.pointer(event)[0];
+      const invertedX = x.invert(mouseX);
+
+      const index = bisectDate(data, invertedX, 1);
+      const dataPoint = data[index];
+
+      if (!dataPoint) return;
+
+      const formatTime = d3.timeFormat("%Y-%m");
+
+      const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(dataPoint.date))}<br/><strong>Average Price:</strong> ${(dataPoint.prixMoyen / 1000).toFixed(2)}K`;
+
+      tooltipRef.current.innerHTML = tooltipContent;
+
+      const tooltipWidth = tooltipRef.current.offsetWidth;
+      const tooltipHeight = tooltipRef.current.offsetHeight;
+      const mouseXOffset = 10;
+      const mouseYOffset = 10;
+      tooltipRef.current.style.top = `${event.clientY - mouseYOffset}px`;
+      tooltipRef.current.style.left = `${event.clientX + mouseXOffset}px`;
+    }
   }, [data]);
 
   return (
