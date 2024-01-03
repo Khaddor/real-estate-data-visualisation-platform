@@ -154,10 +154,10 @@ const BarChart = () => {
   }
 
   return (
-    <div className="BarChart" ref={ref}>
+    <div className="BarChart" ref={ref} style={{ maxWidth: '600px', margin: 'auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
       <p>
-        <label>Choisissez un intervalle </label>
-        <select name="sort" id="intervalle" onChange={handleIntervalChange}>
+        <label style={{ marginRight: '10px' }}>Choisissez un intervalle </label>
+        <select name="sort" id="intervalle" onChange={handleIntervalChange} style={{ padding: '8px', fontSize: '16px' }}>
           <option value="jour">Jour</option>
           <option value="mois">Mois</option>
           <option value="annee">Année</option>
@@ -165,13 +165,13 @@ const BarChart = () => {
       </p>
 
       <p>
-        <label>Date de début </label>
-        <input type="date" id="DateStart" defaultValue="2019-01-01" min="2018-07-01" max="2023-06-30" onChange={handleDateDebutChange}/>
+        <label style={{ marginRight: '10px' }}>Date de début </label>
+        <input type="date" id="DateStart" defaultValue="2019-01-01" min="2018-07-01" max="2023-06-30" onChange={handleDateDebutChange} style={{ padding: '8px', fontSize: '16px' }} />
       </p>
 
       <p>
-        <label>Date de fin </label>
-        <input type="date" id="DateEnd" defaultValue="2019-01-07" min="2018-07-01" max="2023-06-30" onChange={handleDateFinChange}/>
+        <label style={{ marginRight: '10px' }}>Date de fin </label>
+        <input type="date" id="DateEnd" defaultValue="2019-01-07" min="2018-07-01" max="2023-06-30" onChange={handleDateFinChange} style={{ padding: '8px', fontSize: '16px' }} />
       </p>
 
       {loading ? (
@@ -179,6 +179,7 @@ const BarChart = () => {
       ) : null}
     </div>
   );
+
 }
 
 export default BarChart;
