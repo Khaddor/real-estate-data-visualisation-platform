@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 
-interface SalesData {
+interface VentesData {
   region: string;
   nombreVente: number;
 }
 
 interface PieChartProps {
-  data: SalesData[];
+  data: VentesData[];
 }
 
 const PieChart1: React.FC<PieChartProps> = ({ data }) => {
@@ -19,9 +19,9 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       return;
     }
 
-    const width = 450;
-    const height = 450;
-    const margin = 40;
+    const width = 600;
+    const height = 600;
+    const margin = 20;
     const radius = Math.min(width, height) / 2 - margin;
 
     // Clear the SVG if it exists
@@ -42,14 +42,14 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .range(d3.schemeCategory10);
 
     const pie = d3
-      .pie<SalesData>()
+      .pie<VentesData>()
       .sort(null)
       .value((d) => d.nombreVente);
 
     const data_ready = pie(data);
 
     const arcGenerator = d3
-      .arc<d3.PieArcDatum<SalesData>>()
+      .arc<d3.PieArcDatum<VentesData>>()
       .innerRadius(radius * 0.4)
       .outerRadius(radius * 0.8);
 
@@ -83,8 +83,9 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
 };
 
 const PieChart = () => {
-  const [data, setData] = useState<SalesData[]>([]);
+  const [data, setData] = useState<VentesData[]>([]);
   const [year, setYear] = useState("2018");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -107,8 +108,10 @@ const PieChart = () => {
         console.log("result Data:", result);
 
         setData(result);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching data:", error);
+        setLoading(true);
       }
     };
     fetchData();
@@ -124,7 +127,11 @@ const PieChart = () => {
         <option value="2022">2022 data</option>
         <option value="2023">2023 data</option>
       </select>
-      <PieChart1 data={data} />
+      {loading ? (
+        <p className="text-center mt-8">Loading...</p>
+      ) : (
+        <PieChart1 data={data} />
+      )}
     </div>
   );
 };
