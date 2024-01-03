@@ -54,7 +54,6 @@ const BarChart = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setLoading(true);
         const newData = await fetchDataFromAPI(interval, dateDebut, dateFin);
         const dt = newData.sort((a: any, b: any) => new Date(a.date) - new Date(b.date));
         setData(dt);
@@ -67,6 +66,7 @@ const BarChart = () => {
     };
 
     if (shouldFetchData) {
+      setLoading(true);
       fetchData();
       setShouldFetchData(false);
     }
