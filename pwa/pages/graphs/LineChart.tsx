@@ -92,7 +92,7 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
       .attr("stroke-dashoffset", totalLength)
       .transition()
-      .duration(2000)
+      .duration(3000)
       .ease(d3.easeLinear)
       .attr("stroke-dashoffset", 0);
 
