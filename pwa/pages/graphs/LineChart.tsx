@@ -56,6 +56,16 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
       .x(d => x(new Date(d.date) as Date))
       .y(d => y(d.prixMoyen));
 
+    // Add title to the chart
+    svg.append("text")
+    .attr("x", width / 2)
+    .attr("y", 0 - margin.top + 45)
+    .attr("text-anchor", "middle")
+    .style("font-size", "18px")
+    .style("text-decoration", "underline")
+    .text("Prix Moyen par Mois");
+
+
     // Add X Axis
     svg.append("g")
       .attr("transform", `translate(0, ${height})`)
