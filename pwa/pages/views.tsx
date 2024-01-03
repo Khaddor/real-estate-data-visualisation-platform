@@ -19,7 +19,7 @@ export default function Views() {
 
         {/* Line Chart */}
         <LineChartComponent />
-
+        <h1> <b>Bar Chart</b></h1>
         {/* Bar Chart */}
         <BarChartComponent />
 
