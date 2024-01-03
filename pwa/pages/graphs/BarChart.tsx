@@ -43,19 +43,26 @@ const BarChart = () => {
     { date: '2019-01-07T14:09:58+00:00', nombreVente: 473 },
   ];
 
-
   const [data, setData] = useState(sampleData);
   const [interval, setInterval] = useState("jour");
   const [dateDebut, setDateDebut] = useState("2019-01-01");
   const [dateFin, setDateFin] = useState("2019-01-07");
   const [shouldFetchData, setShouldFetchData] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [updated, setUpdated] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
-      const newData = await fetchDataFromAPI(interval, dateDebut, dateFin);
-      setData(newData);
-      setUpdated(true);
+      try {
+        setLoading(true);
+        const newData = await fetchDataFromAPI(interval, dateDebut, dateFin);
+        setData(newData);
+        setUpdated(true);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
     };
 
     if (shouldFetchData) {
@@ -166,6 +173,10 @@ const BarChart = () => {
         <label>Date de fin </label>
         <input type="date" id="DateEnd" defaultValue="2019-01-07" onChange={handleDateFinChange}/>
       </p>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : null}
     </div>
   );
 }
