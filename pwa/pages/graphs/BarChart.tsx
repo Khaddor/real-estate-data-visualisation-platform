@@ -56,7 +56,8 @@ const BarChart = () => {
       try {
         setLoading(true);
         const newData = await fetchDataFromAPI(interval, dateDebut, dateFin);
-        setData(newData);
+        const dt = newData.sort((a: any, b: any) => new Date(a.date) - new Date(b.date));
+        setData(dt);
         setUpdated(true);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -101,8 +102,12 @@ const BarChart = () => {
 
     var x = d3.scaleBand()
       .range([0, width])
-      .padding(0.2)
-      .domain(data.map(d => d.date));
+      .domain(
+        data.map(function (d: any) {
+          return d.date.substring(0, 10);
+        })
+      )
+      .padding(0.2);
 
     svg.append("g")
       .attr("transform", "translate(0," + height + ")")
@@ -118,7 +123,7 @@ const BarChart = () => {
       .append("rect")
       .attr("class", "bar")
       .attr("x", function (d) {
-        return x(d.date);
+        return x(d.date.substring(0, 10));
       })
       .attr("width", x.bandwidth())
       .attr("y", height)  // Initial y position at the bottom
