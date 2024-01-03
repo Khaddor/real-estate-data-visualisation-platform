@@ -84,12 +84,13 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
 
 const PieChart = () => {
   const [data, setData] = useState<SalesData[]>([]);
+  const [year, setYear] = useState("2018");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `https://localhost/ventes_par_region/2019`,
+          `https://localhost/ventes_par_region/${year}`,
           {
             method: "GET",
             headers: {
@@ -111,11 +112,18 @@ const PieChart = () => {
       }
     };
     fetchData();
-  }, []);
+  }, [year]);
 
   return (
     <div>
       <h1>Pie Chart</h1>
+      <select value={year} onChange={(e) => setYear(e.target.value)}>
+        <option value="2018">2018 data</option>
+        <option value="2019">2019 data</option>
+        <option value="2021">2021 data</option>
+        <option value="2022">2022 data</option>
+        <option value="2023">2023 data</option>
+      </select>
       <PieChart1 data={data} />
     </div>
   );
