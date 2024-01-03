@@ -166,12 +166,12 @@ const BarChart = () => {
 
       <p>
         <label>Date de début </label>
-        <input type="date" id="DateStart" defaultValue="2019-01-01" onChange={handleDateDebutChange}/>
+        <input type="date" id="DateStart" defaultValue="2019-01-01" min="2018-07-01" max="2023-06-30" onChange={handleDateDebutChange}/>
       </p>
 
       <p>
         <label>Date de fin </label>
-        <input type="date" id="DateEnd" defaultValue="2019-01-07" onChange={handleDateFinChange}/>
+        <input type="date" id="DateEnd" defaultValue="2019-01-07" min="2018-07-01" max="2023-06-30" onChange={handleDateFinChange}/>
       </p>
 
       {loading ? (
