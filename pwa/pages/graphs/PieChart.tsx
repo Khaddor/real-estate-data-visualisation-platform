@@ -1,9 +1,103 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
+import * as d3 from "d3";
 
-const PieChart: React.FC = () => {
+interface SalesData {
+  region: string;
+  nombreVente: number;
+}
+
+interface PieChartProps {
+  data: SalesData[];
+}
+
+const PieChart1: React.FC<PieChartProps> = ({ data }) => {
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  useEffect(() => {
+    if (!Array.isArray(data) || data.length === 0) {
+      console.error("Invalid data format:", data);
+      return;
+    }
+
+    const width = 450;
+    const height = 450;
+    const margin = 40;
+    const radius = Math.min(width, height) / 2 - margin;
+
+    // Clear the SVG if it exists
+    d3.select(svgRef.current).select("svg").remove();
+
+    // Append the svg object to the div
+    const svg = d3
+      .select(svgRef.current)
+      .append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+    const color = d3
+      .scaleOrdinal()
+      .domain(data.map((d) => d.region))
+      .range(d3.schemeCategory10);
+
+    const pie = d3
+      .pie<SalesData>()
+      .sort(null)
+      .value((d) => d.nombreVente);
+
+    const data_ready = pie(data);
+
+    const arcGenerator = d3
+      .arc<d3.PieArcDatum<SalesData>>()
+      .innerRadius(radius * 0.4)
+      .outerRadius(radius * 0.8);
+
+    // Build the pie chart
+    svg
+      .selectAll("path")
+      .data(data_ready)
+      .join("path")
+      .attr("d", arcGenerator)
+      .attr("fill", (d) => color(d.data.region))
+      .attr("stroke", "white")
+      .style("stroke-width", "2px")
+      .style("opacity", 0.7);
+
+    // Add labels
+    svg
+      .selectAll("text")
+      .data(data_ready)
+      .join("text")
+      .text((d) => `${d.data.region} (${d.data.nombreVente}%)`)
+      .attr("transform", (d) => `translate(${arcGenerator.centroid(d)})`)
+      .style("text-anchor", "middle")
+      .style("font-size", 4);
+  }, [data]); // Only re-run the effect if `data` changes
+
   return (
     <div>
-      <p>Pie Chart</p>
+      <div ref={svgRef}></div>
+    </div>
+  );
+};
+
+const PieChart = () => {
+  const data = [
+    {
+      region: "Hauts-de-France",
+      nombreVente: 9468,
+    },
+    {
+      region: "Nouvelle-Aquitaine",
+      nombreVente: 9904,
+    },
+  ];
+
+  return (
+    <div>
+      <h1>Pie Chart</h1>
+      <PieChart1 data={data} />
     </div>
   );
 };
