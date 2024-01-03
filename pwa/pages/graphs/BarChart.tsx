@@ -33,11 +33,21 @@ export const fetchDataFromAPI = async (interval, startDate, endDate) => {
 const BarChart = () => {
   const ref = useRef(null);
 
+  const sampleData = [
+    { date: '2019-01-01T13:46:56+00:00', nombreVente: 150 },
+    { date: '2019-01-02T13:46:56+00:00', nombreVente: 126 },
+    { date: '2019-01-03T13:46:56+00:00', nombreVente: 397 },
+    { date: '2019-01-04T13:46:56+00:00', nombreVente: 600 },
+    { date: '2019-01-05T13:46:56+00:00', nombreVente: 78 },
+    { date: '2019-01-06T14:09:58+00:00', nombreVente: 1 },
+    { date: '2019-01-07T14:09:58+00:00', nombreVente: 473 },
+  ];
 
-  const [data, setData] = useState([]);
+
+  const [data, setData] = useState(sampleData);
   const [interval, setInterval] = useState("jour");
-  const [dateDebut, setDateDebut] = useState("");
-  const [dateFin, setDateFin] = useState("");
+  const [dateDebut, setDateDebut] = useState("2019-01-01");
+  const [dateFin, setDateFin] = useState("2019-01-07");
   const [shouldFetchData, setShouldFetchData] = useState(false);
   const [updated, setUpdated] = useState(true);
 
