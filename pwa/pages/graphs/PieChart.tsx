@@ -83,16 +83,35 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
 };
 
 const PieChart = () => {
-  const data = [
-    {
-      region: "Hauts-de-France",
-      nombreVente: 9468,
-    },
-    {
-      region: "Nouvelle-Aquitaine",
-      nombreVente: 9904,
-    },
-  ];
+  const [data, setData] = useState<SalesData[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://localhost/ventes_par_region/2019`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Data not found");
+        }
+
+        const result = await response.json();
+        console.log("result Data:", result);
+
+        setData(result);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <div>
