@@ -2,6 +2,7 @@ import React from "react";
 import Head from "next/head";
 import LineChartComponent from "./graphs/LineChart";
 import BarChartComponent from "./graphs/BarChart"; // Import BarChartComponent
+import PieChart from "./graphs/PieChart";
 
 export default function Views() {
   return (
@@ -21,6 +22,8 @@ export default function Views() {
 
         {/* Bar Chart */}
         <BarChartComponent />
+
+        <PieChart />
       </section>
     </div>
   );
