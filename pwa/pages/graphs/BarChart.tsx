@@ -32,6 +32,7 @@ export const fetchDataFromAPI = async (interval, startDate, endDate) => {
 
 const BarChart = () => {
   const ref = useRef(null);
+  const tooltipRef = useRef(null);
 
   const sampleData = [
     { date: '2019-01-01T13:46:56+00:00', nombreVente: 150 },
@@ -79,28 +80,27 @@ const BarChart = () => {
 
   const drawChart = () => {
     const container = ref.current;
-    console.log("data", data);
     if (!container) return;
 
     d3.select(container).select("svg").remove();
 
-    var margin = { top: 30, right: 30, bottom: 70, left: 60 },
-      width = 460 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+    const margin = { top: 30, right: 30, bottom: 70, left: 60 };
+    const width = 460 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
 
-    var svg = d3.select(container)
+    const svg = d3.select(container)
       .append("svg")
       .attr("width", width + margin.left + margin.right)
       .attr("height", height + margin.top + margin.bottom)
       .append("g")
-      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+      .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    var max = Math.max(...data.map(o => o.nombreVente)) * 1.2;
-    var y = d3.scaleLinear().domain([0, max]).range([height, 0]);
+    const max = Math.max(...data.map(o => o.nombreVente)) * 1.2;
+    const y = d3.scaleLinear().domain([0, max]).range([height, 0]);
 
     svg.append("g").call(d3.axisLeft(y));
 
-    var x = d3.scaleBand()
+    const x = d3.scaleBand()
       .range([0, width])
       .domain(
         data.map(function (d: any) {
@@ -110,14 +110,13 @@ const BarChart = () => {
       .padding(0.2);
 
     svg.append("g")
-      .attr("transform", "translate(0," + height + ")")
+      .attr("transform", `translate(0,${height})`)
       .call(d3.axisBottom(x))
       .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end");
 
-    // Data
-    var bars = svg.selectAll(".bar")
+    const bars = svg.selectAll(".bar")
       .data(data)
       .enter()
       .append("rect")
@@ -126,9 +125,11 @@ const BarChart = () => {
         return x(d.date.substring(0, 10));
       })
       .attr("width", x.bandwidth())
-      .attr("y", height)  // Initial y position at the bottom
-      .attr("height", 0)  // Initial height at 0
-      .attr("fill", "#69b3a2");
+      .attr("y", height)
+      .attr("height", 0)
+      .attr("fill", "#69b3a2")
+      .on("mouseover", handleMouseOver)
+      .on("mouseout", handleMouseOut);
 
     bars.transition()
       .duration(800)
@@ -141,6 +142,19 @@ const BarChart = () => {
       .delay(function (d, i) {
         return (i * 100);
       });
+
+    function handleMouseOver(event, d) {
+      const formatTime = d3.timeFormat("%Y-%m-%d");
+      const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(d.date))}<br/><strong>Nombre Vente:</strong> ${d.nombreVente}`;
+      tooltipRef.current.innerHTML = tooltipContent;
+      tooltipRef.current.style.top = `${event.clientY}px`;
+      tooltipRef.current.style.left = `${event.clientX + 10}px`;
+      tooltipRef.current.style.visibility = "visible";
+    }
+
+    function handleMouseOut() {
+      tooltipRef.current.style.visibility = "hidden";
+    }
   };
 
   const handleIntervalChange = event => {
@@ -160,6 +174,8 @@ const BarChart = () => {
 
   return (
     <div className="BarChart" ref={ref} style={{ maxWidth: '600px', margin: 'auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
+      <div ref={tooltipRef} style={{ position: 'absolute', backgroundColor: 'white', border: '1px solid #ccc', padding: '8px', borderRadius: '8px', visibility: 'hidden' }}></div>
+
       <p>
         <label style={{ marginRight: '10px' }}>Choisissez un intervalle </label>
         <select name="sort" id="intervalle" onChange={handleIntervalChange} style={{ padding: '8px', fontSize: '16px' }}>
@@ -184,7 +200,6 @@ const BarChart = () => {
       ) : null}
     </div>
   );
-
-}
+};
 
 export default BarChart;
