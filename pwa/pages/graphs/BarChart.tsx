@@ -127,9 +127,15 @@ const BarChart = () => {
       .attr("width", x.bandwidth())
       .attr("y", height)
       .attr("height", 0)
-      .attr("fill", "#69b3a2")
-      .on("mouseover", handleMouseOver)
-      .on("mouseout", handleMouseOut);
+      .attr("fill", "#dde5b6")
+      .on("mouseover", function (event, d) {
+        d3.select(this).attr("fill", "#adc178"); // Change color on hover for the bar
+        handleMouseOver(event, d); // Call the custom mouseover function
+      })
+      .on("mouseout", function () {
+        d3.select(this).attr("fill", "#dde5b6"); // Revert to original color on mouseout for the bar
+        handleMouseOut(); // Call the custom mouseout function
+      });
 
     bars.transition()
       .duration(800)
