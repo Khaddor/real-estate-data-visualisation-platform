@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
+import nav from "../public/nav.png"
 
 const navigation = [
   { name: 'série temporelle', href: '#' },
@@ -31,6 +32,11 @@ export default function Example() {
               onClick={() => setMobileMenuOpen(true)}
             >
               <span className="sr-only">Open main menu</span>
+              <img
+                className="h-6 w-6" aria-hidden="true"
+                src="https://cdn.icon-icons.com/icons2/3215/PNG/512/hamburger_menu_navbar_options_icon_196495.png"
+                alt="new"
+              />
             </button>
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
