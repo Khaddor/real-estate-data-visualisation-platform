@@ -2,12 +2,12 @@ import React from 'react';
 import { Dialog } from '@headlessui/react';
 
 const navigation = [
-  { name: 'série temporelle', href: '#' },
-  { name: ' diagramme à barres ', href: '#' },
-  { name: ' diagramme circulaire', href: '#' },
+  { name: 'Line Chart', id: 'line-chart' },
+  { name: 'Bar Chart', id: 'bar-chart' },
+  { name: 'Pie Chart', id: 'pie-chart' },
 ];
 
-const Navbar = ({ mobileMenuOpen , setMobileMenuOpen }) => {
+const Navbar = ({ mobileMenuOpen , setMobileMenuOpen , setActiveChart}) => {
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
@@ -37,9 +37,9 @@ const Navbar = ({ mobileMenuOpen , setMobileMenuOpen }) => {
         </div>
         <div className="hidden lg:flex lg:gap-x-12">
           {navigation.map((item) => (
-            <a key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
+            <button key={item.id} onClick={() => setActiveChart(item.id)}>
               {item.name}
-            </a>
+            </button>
           ))}
         </div>
         <div className="hidden lg:flex lg:flex-1 lg:justify-end">
@@ -71,13 +71,9 @@ const Navbar = ({ mobileMenuOpen , setMobileMenuOpen }) => {
             <div className="-my-6 divide-y divide-gray-500/10">
               <div className="space-y-2 py-6">
                 {navigation.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
+                  <button key={item.id} onClick={() => setActiveChart(item.id)}>
                     {item.name}
-                  </a>
+                  </button>
                 ))}
               </div>
             </div>
