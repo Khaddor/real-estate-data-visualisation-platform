@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Dialog } from '@headlessui/react'
-import nav from "../public/nav.png"
 
 const navigation = [
   { name: 'série temporelle', href: '#' },
