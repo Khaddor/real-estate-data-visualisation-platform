@@ -1,30 +1,30 @@
-import React from "react";
-import Head from "next/head";
-import LineChartComponent from "./graphs/LineChart";
-import BarChartComponent from "./graphs/BarChart"; // Import BarChartComponent
-import PieChart from "./graphs/PieChart";
+// Views.js
+import React, { useState } from 'react';
+import NavBar from '../components/NavBar';
+import LineChartComponent from './graphs/LineChart';
+import BarChartComponent from './graphs/BarChart';
+import PieChart from './graphs/PieChart';
 
-export default function Views() {
+const Views = () => {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeChart, setActiveChart] = useState('line-chart');
+
   return (
     <div>
-      <Head>
-        <title>Graphiques</title>
-      </Head>
-      <section className="home-section">
-        <div className="home-content">
-          <span className="text">Graphiques</span>
-        </div>
-
-        {/* Charts components */}
-
-        {/* Line Chart */}
-        <LineChartComponent />
-        <h1> <b>Bar Chart</b></h1>
-        {/* Bar Chart */}
-        <BarChartComponent />
-
-        <PieChart />
+      <div className="bg-white">
+      <NavBar
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+        setActiveChart={setActiveChart}
+      />
+      </div>
+      <section>
+        {activeChart === 'line-chart' && <LineChartComponent />}
+        {activeChart === 'bar-chart' && <BarChartComponent />}
+        {activeChart === 'pie-chart' && <PieChart />}
       </section>
     </div>
   );
-}
+};
+
+export default Views;
