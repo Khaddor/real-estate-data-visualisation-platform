@@ -153,8 +153,8 @@ const BarChart = () => {
       const formatTime = d3.timeFormat("%Y-%m-%d");
       const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(d.date))}<br/><strong>Nombre Vente:</strong> ${d.nombreVente}`;
       tooltipRef.current.innerHTML = tooltipContent;
-      tooltipRef.current.style.top = `${event.clientY}px`;
-      tooltipRef.current.style.left = `${event.clientX + 10}px`;
+      tooltipRef.current.style.top = `${event.clientY - 100}px`;
+      tooltipRef.current.style.left = `${event.clientX -600  }px`;
       tooltipRef.current.style.visibility = "visible";
     }
 
