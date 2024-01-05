@@ -5,7 +5,16 @@ import Footer from './Footer';
 const LandingPage = ({ mobileMenuOpen, setMobileMenuOpen }) => {
   return (
     <div className="bg-white">
-      <Navbar mobileMenuOpen={mobileMenuOpen} setMobileMenuOpen={setMobileMenuOpen}/>
+      <div className="flex lg:flex-1">
+          <a href="/" className="m-10 ">
+            <span className="sr-only"></span>
+            <img
+              className="h-8 w-auto"
+              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+              alt=""
+            />
+          </a>
+        </div>
       <div className="relative isolate px-6 pt-14 lg:px-8">
         <div
           className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
