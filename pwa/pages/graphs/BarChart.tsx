@@ -146,7 +146,7 @@ const BarChart = () => {
         return height - y(d.nombreVente);
       })
       .delay(function (d, i) {
-        return (i * 100);
+        return (i * 500);
       });
 
     function handleMouseOver(event, d) {
