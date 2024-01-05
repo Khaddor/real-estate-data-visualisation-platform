@@ -84,8 +84,8 @@ const BarChart = () => {
 
     d3.select(container).select("svg").remove();
 
-    const margin = { top: 30, right: 30, bottom: 70, left: 60 };
-    const width = 460 - margin.left - margin.right;
+    const margin = { top: 30, right: 30, bottom: 70, left: 50 };
+    const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
     const svg = d3.select(container)
@@ -150,8 +150,7 @@ const BarChart = () => {
       });
 
     function handleMouseOver(event, d) {
-      const formatTime = d3.timeFormat("%Y-%m-%d");
-      const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(d.date))}<br/><strong>Nombre Vente:</strong> ${d.nombreVente}`;
+      const tooltipContent = `<strong>Date:</strong> ${d.date.substring(0,10)}<br/><strong>Nombre Vente:</strong> ${d.nombreVente}`;
       tooltipRef.current.innerHTML = tooltipContent;
       tooltipRef.current.style.top = `${event.clientY - 100}px`;
       tooltipRef.current.style.left = `${event.clientX -600  }px`;
