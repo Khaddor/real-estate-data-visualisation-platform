@@ -11,20 +11,19 @@ const Views = () => {
 
   return (
     <div>
-      <div className="bg-white">
       <NavBar
         mobileMenuOpen={mobileMenuOpen}
         setMobileMenuOpen={setMobileMenuOpen}
         setActiveChart={setActiveChart}
       />
-      </div>
-      <section>
-        {activeChart === 'line-chart' && <LineChartComponent />}
-        {activeChart === 'bar-chart' && <BarChartComponent />}
-        {activeChart === 'pie-chart' && <PieChart />}
-      </section>
-    </div>
-  );
+
+      <section className="flex justify-center items-center min-h-screen bg-gray-100">
+    {activeChart === 'line-chart' && <LineChartComponent/>}
+    {activeChart === 'bar-chart' && <BarChartComponent/>}
+    {activeChart === 'pie-chart' && <PieChart/>}
+  </section>
+</div>
+);
 };
 
 export default Views;
