@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NavBar from '../components/NavBar';
 import LineChartComponent from './graphs/LineChart';
 import BarChartComponent from './graphs/BarChart';
@@ -8,6 +8,11 @@ import Footer from "../components/Footer";
 const Views = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeChart, setActiveChart] = useState('line-chart');
+  useEffect(() => {
+    return () => {
+      document.title = 'Chart Visualisation';
+    };
+  }, []);
 
   return (
     <div>
