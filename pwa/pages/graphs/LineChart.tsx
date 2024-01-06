@@ -118,31 +118,37 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
         d3.select(".line").attr("stroke", "steelblue").attr("stroke-width", 3); 
       });
 
-    function showTooltip(event: MouseEvent) {
-      if (!tooltipRef.current) return;
+      function showTooltip(event: MouseEvent) {
+        if (!tooltipRef.current) return;
+      
+        const bisectDate = d3.bisector<DataPoint, Date>((d: DataPoint) => new Date(d.date) as Date).left;
+        const mouseX = d3.pointer(event)[0];
+        const invertedX = x.invert(mouseX);
+      
+        const index = bisectDate(data, invertedX, 1);
+        const dataPoint = data[index];
+      
+        if (!dataPoint) return;
+      
+        const formatTime = d3.timeFormat("%Y-%m");
+      
+        const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(dataPoint.date))}<br/><strong>Average Price:</strong> ${(dataPoint.prixMoyen / 1000).toFixed(2)}K`;
+      
+        tooltipRef.current.innerHTML = tooltipContent;
+      
+        // Dynamically calculate tooltip position
+        const tooltipWidth = tooltipRef.current.offsetWidth;
+        const tooltipHeight = tooltipRef.current.offsetHeight;
+        const mouseXOffset = 10;
+      
+         const mouseY = event.clientY + window.scrollY;
+      
+        const tooltipLeft = mouseX - tooltipWidth / 2 + mouseXOffset;
+      
+        tooltipRef.current.style.left = `${tooltipLeft}px`;
+      }
 
-      const bisectDate = d3.bisector<DataPoint, Date>((d: DataPoint) => new Date(d.date) as Date).left;
-      const mouseX = d3.pointer(event)[0];
-      const invertedX = x.invert(mouseX);
-
-      const index = bisectDate(data, invertedX, 1);
-      const dataPoint = data[index];
-
-      if (!dataPoint) return;
-
-      const formatTime = d3.timeFormat("%Y-%m");
-
-      const tooltipContent = `<strong>Date:</strong> ${formatTime(new Date(dataPoint.date))}<br/><strong>Average Price:</strong> ${(dataPoint.prixMoyen / 1000).toFixed(2)}K`;
-
-      tooltipRef.current.innerHTML = tooltipContent;
-
-      const tooltipWidth = tooltipRef.current.offsetWidth;
-      const tooltipHeight = tooltipRef.current.offsetHeight;
-      const mouseXOffset = 10;
-      const mouseYOffset = 10;
-      tooltipRef.current.style.top = `${event.clientY - mouseYOffset}px`;
-      tooltipRef.current.style.left = `${event.clientX + mouseXOffset}px`;
-    }
+      
   }, [data]);
 
   return (
