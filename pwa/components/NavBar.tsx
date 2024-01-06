@@ -38,7 +38,9 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
             />
           </button>
         </div>
-        <div className="hidden lg:flex lg:gap-x-12">
+        <div className="hidden lg:flex lg:gap-x-12 flex-col lg:flex-row">
+          {" "}
+          {/* Updated here */}
           {navigation.map((item) => (
             <button key={item.id} onClick={() => setActiveChart(item.id)}>
               {item.name}
@@ -60,7 +62,7 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
               <span className="sr-only">Your Company</span>
               <img
                 className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                src="https://e7.pngegg.com/pngimages/669/146/png-clipart-house-real-estate-computer-icons-home-estate-agent-house-angle-logo.png"
                 alt=""
               />
             </a>
