@@ -76,13 +76,15 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
           </div>
           <div className="mt-6 flow-root">
             <div className="-my-6 divide-y divide-gray-500/10">
-              <div className="space-y-2 py-6">
+              <ul className="space-y-2 py-6">
                 {navigation.map((item) => (
-                  <button key={item.id} onClick={() => setActiveChart(item.id)}>
-                    {item.name}
-                  </button>
+                  <li key={item.id}>
+                    <button onClick={() => setActiveChart(item.id)}>
+                      {item.name}
+                    </button>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
           </div>
         </Dialog.Panel>
