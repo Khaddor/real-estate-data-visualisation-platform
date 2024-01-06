@@ -12,6 +12,7 @@ interface PieChartProps {
 
 const PieChart1: React.FC<PieChartProps> = ({ data }) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
+
   // Calculate total sales
   const totalSales = data.reduce(
     (sum, { nombreVente }) => sum + nombreVente,
@@ -30,10 +31,22 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       return;
     }
 
-    const width = 600;
+    const width = 1000;
     const height = 600;
-    const margin = 20;
+    const margin = 30;
     const radius = Math.min(width, height) / 2 - margin;
+
+    // The arc generator
+    var arc = d3
+      .arc()
+      .innerRadius(radius * 0.5) // This is the size of the donut hole
+      .outerRadius(radius * 0.8);
+
+    // Another arc that won't be drawn. Just for labels positioning
+    var outerArc = d3
+      .arc()
+      .innerRadius(radius * 0.9)
+      .outerRadius(radius * 0.9);
 
     // Clear the SVG if it exists
     d3.select(svgRef.current).select("svg").remove();
@@ -64,31 +77,74 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .innerRadius(radius * 0.4)
       .outerRadius(radius * 0.8);
 
-    // Build the pie chart
     svg
       .selectAll("path")
       .data(data_ready)
       .join("path")
       .attr("d", arcGenerator)
-      .attr("fill", (d) => color(d.data.region))
+      .attr("fill", (d, i) => color(d.data.region))
       .attr("stroke", "white")
       .style("stroke-width", "2px")
-      .style("opacity", 0.7);
+      .style("opacity", (d, i) => 0.7);
 
-    // Add labels
-    svg
-      .selectAll("text")
+    // Add lines and labels
+    const lines = svg
+      .selectAll("allPolylines")
       .data(data_ready)
-      .join("text")
-      .text((d) => `${d.data.region} (${d.data.salesPercentage}%)`)
-      .attr("transform", (d) => `translate(${arcGenerator.centroid(d)})`)
-      .style("text-anchor", "middle")
-      .style("font-size", 4);
+      .enter()
+      .append("polyline")
+      .attr("stroke", "black")
+      .style("fill", "none")
+      .attr("stroke-width", 1)
+      .attr("points", function (d) {
+        const posA = arc.centroid(d);
+        const posB = outerArc.centroid(d);
+        const posC = outerArc.centroid(d);
+        const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+        posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1);
+        return [posA, posB, posC];
+      });
+
+    const labels = svg
+      .selectAll("allLabels")
+      .data(data_ready)
+      .enter()
+      .append("text")
+      .text(function (d) {
+        return d.data.region;
+      })
+      .attr("transform", function (d) {
+        const pos = outerArc.centroid(d);
+        const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+        pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
+        return `translate(${pos})`;
+      })
+      .style("text-anchor", function (d) {
+        const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+        return midangle < Math.PI ? "start" : "end";
+      });
+
+    // Add the polylines between chart and labels:
+    svg
+      .selectAll("allLabels")
+      .data(data_ready)
+      .enter()
+      .append("text")
+      .text(function (d) {
+        console.log(d.data.key);
+        return d.data.key;
+      })
+      .attr("transform", function (d) {
+        var pos = outerArc.centroid(d);
+        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
+        pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
+        return "translate(" + pos + ")";
+      });
   }, [data]); // Only re-run the effect if `data` changes
 
   return (
-    <div>
-      <div ref={svgRef}></div>
+    <div className="relative">
+      <div className="w-full h-full" ref={svgRef}></div>
     </div>
   );
 };
@@ -129,7 +185,7 @@ const PieChart = () => {
   }, [year]);
 
   return (
-    <div>
+    <div className="w-full max-w-screen-lg mx-auto">
       <h1>Pie Chart</h1>
       <select value={year} onChange={(e) => setYear(e.target.value)}>
         <option value="2018">2018 data</option>
@@ -141,7 +197,7 @@ const PieChart = () => {
       {loading ? (
         <p className="text-center mt-8">Loading...</p>
       ) : (
-        <PieChart1 data={data} />
+        <PieChart1 data={data} className="px-8" />
       )}
     </div>
   );
