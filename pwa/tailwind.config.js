@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
@@ -16,16 +15,16 @@ module.exports = {
         DEFAULT: "300ms",
       },
       minHeight: {
-        24: "96px"
+        24: "96px",
       },
       colors: {
         cyan: {
           500: "#46b6bf",
           700: "#0f929a",
-          200: "#bceff3"
+          200: "#bceff3",
         },
         red: {
-          500: "#ee4322"
+          500: "#ee4322",
         },
         black: "#1d1e1c",
         white: "#ffffff",
@@ -39,5 +38,6 @@ module.exports = {
   },
   plugins: [
     require("@tailwindcss/forms"),
+    require("daisyui"), // Add DaisyUI plugin here
   ],
 };
