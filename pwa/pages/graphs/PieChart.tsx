@@ -143,7 +143,11 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
         const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
         posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1);
         return [posA, posB, posC];
-      });
+      })
+      .style("opacity", 0)
+      .transition()
+      .duration(1000)
+      .style("opacity", 1);
 
     const labels = svg
       .selectAll("allLabels")
@@ -162,7 +166,11 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .style("text-anchor", function (d) {
         const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
         return midangle < Math.PI ? "start" : "end";
-      });
+      })
+      .style("opacity", 0)
+      .transition()
+      .duration(1000)
+      .style("opacity", 1);
   }, [data]); // Only re-run the effect if `data` changes
 
   return (
