@@ -1,23 +1,25 @@
-import React from 'react';
-import { Dialog } from '@headlessui/react';
+import React from "react";
+import { Dialog } from "@headlessui/react";
 
 const navigation = [
-  { name: 'Line Chart', id: 'line-chart' },
-  { name: 'Bar Chart', id: 'bar-chart' },
-  { name: 'Pie Chart', id: 'pie-chart' },
+  { name: "Line Chart", id: "line-chart" },
+  { name: "Bar Chart", id: "bar-chart" },
+  { name: "Pie Chart", id: "pie-chart" },
 ];
 
-const Navbar = ({ mobileMenuOpen , setMobileMenuOpen , setActiveChart}) => {
+const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
   return (
     <header className="absolute inset-x-0 top-0 z-50">
-      <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
+      <nav
+        className="flex items-center justify-between p-6 lg:px-8"
+        aria-label="Global"
+      >
         <div className="flex lg:flex-1">
           <a href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">ImmoVista</span>
             <img
               className="h-8 w-auto"
-              src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-              alt=""
+              src="https://e7.pngegg.com/pngimages/669/146/png-clipart-house-real-estate-computer-icons-home-estate-agent-house-angle-logo.png"
             />
           </a>
         </div>
@@ -29,7 +31,8 @@ const Navbar = ({ mobileMenuOpen , setMobileMenuOpen , setActiveChart}) => {
           >
             <span className="sr-only">Open main menu</span>
             <img
-              className="h-12 w-12" aria-hidden="true"
+              className="h-12 w-12"
+              aria-hidden="true"
               src="https://cdn.icon-icons.com/icons2/3215/PNG/512/hamburger_menu_navbar_options_icon_196495.png"
               alt="new"
             />
@@ -42,14 +45,16 @@ const Navbar = ({ mobileMenuOpen , setMobileMenuOpen , setActiveChart}) => {
             </button>
           ))}
         </div>
-        <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-
-        </div>
+        <div className="hidden lg:flex lg:flex-1 lg:justify-end"></div>
       </nav>
-      <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-        <div className="fixed inset-0 z-50"/>
-        <Dialog.Panel
-          className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+      <Dialog
+        as="div"
+        className="lg:hidden"
+        open={mobileMenuOpen}
+        onClose={setMobileMenuOpen}
+      >
+        <div className="fixed inset-0 z-50" />
+        <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
           <div className="flex items-center justify-between">
             <a href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Your Company</span>
@@ -81,7 +86,6 @@ const Navbar = ({ mobileMenuOpen , setMobileMenuOpen , setActiveChart}) => {
         </Dialog.Panel>
       </Dialog>
     </header>
-
   );
 };
 
