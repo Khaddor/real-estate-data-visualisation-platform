@@ -77,6 +77,23 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .innerRadius(radius * 0.4)
       .outerRadius(radius * 0.8);
 
+    const div = d3
+      .select("body")
+      .append("div")
+      .attr("class", "tooltip-donut")
+      .style("opacity", 0);
+
+    div
+      .style("position", "absolute")
+      .style("text-align", "center")
+      .style("padding", ".4rem")
+      .style("background", "#FFFFFF")
+      .style("color", "#313639")
+      .style("border", "1px solid #313639")
+      .style("border-radius", "8px")
+      .style("pointer-events", "none")
+      .style("font-size", "1rem");
+
     svg
       .selectAll("path")
       .data(data_ready)
@@ -85,7 +102,23 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .attr("fill", (d, i) => color(d.data.region))
       .attr("stroke", "white")
       .style("stroke-width", "2px")
-      .style("opacity", (d, i) => 0.7);
+      .attr("transform", "translate(0, 0)")
+      .on("mouseover", function (event, d) {
+        d3.select(this).transition().duration(50).style("opacity", 0.85);
+
+        div.transition().duration(50).style("opacity", 1);
+
+        const salesPercentage = `${d.data.salesPercentage}%`;
+        div
+          .html(salesPercentage)
+          .style("left", event.pageX + 10 + "px")
+          .style("top", event.pageY - 15 + "px");
+      })
+      .on("mouseout", function (event, d) {
+        d3.select(this).transition().duration(50).style("opacity", 1);
+
+        div.transition().duration(50).style("opacity", 0);
+      });
 
     // Add lines and labels
     const lines = svg
@@ -104,22 +137,6 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
         posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1);
         return [posA, posB, posC];
       });
-    svg
-      .selectAll("allLabels")
-      .data(data_ready)
-      .enter()
-      .append("text")
-      .text(function (d) {
-        // Add the percentage to the label text
-        return `${d.data.salesPercentage}%`;
-      })
-      .attr("transform", function (d) {
-        const pos = arc.centroid(d); // Place the labels at the centroid of each slice
-        return `translate(${pos})`;
-      })
-      .style("text-anchor", "middle") // Center-align the labels
-      .style("font-size", "12px") // Adjust font size as needed
-      .style("fill", "black");
 
     const labels = svg
       .selectAll("allLabels")
@@ -138,23 +155,6 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .style("text-anchor", function (d) {
         const midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
         return midangle < Math.PI ? "start" : "end";
-      });
-
-    // Add the polylines between chart and labels:
-    svg
-      .selectAll("allLabels")
-      .data(data_ready)
-      .enter()
-      .append("text")
-      .text(function (d) {
-        console.log(d.data.key);
-        return d.data.key;
-      })
-      .attr("transform", function (d) {
-        var pos = outerArc.centroid(d);
-        var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2;
-        pos[0] = radius * 0.99 * (midangle < Math.PI ? 1 : -1);
-        return "translate(" + pos + ")";
       });
   }, [data]); // Only re-run the effect if `data` changes
 
