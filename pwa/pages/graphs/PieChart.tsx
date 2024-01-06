@@ -93,7 +93,7 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
       .data(data_ready)
       .enter()
       .append("polyline")
-      .attr("stroke", "black")
+      .attr("stroke", "grey")
       .style("fill", "none")
       .attr("stroke-width", 1)
       .attr("points", function (d) {
@@ -104,6 +104,22 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
         posC[0] = radius * 0.95 * (midangle < Math.PI ? 1 : -1);
         return [posA, posB, posC];
       });
+    svg
+      .selectAll("allLabels")
+      .data(data_ready)
+      .enter()
+      .append("text")
+      .text(function (d) {
+        // Add the percentage to the label text
+        return `${d.data.salesPercentage}%`;
+      })
+      .attr("transform", function (d) {
+        const pos = arc.centroid(d); // Place the labels at the centroid of each slice
+        return `translate(${pos})`;
+      })
+      .style("text-anchor", "middle") // Center-align the labels
+      .style("font-size", "12px") // Adjust font size as needed
+      .style("fill", "black");
 
     const labels = svg
       .selectAll("allLabels")
