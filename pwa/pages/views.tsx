@@ -10,7 +10,7 @@ const Views = () => {
   const [activeChart, setActiveChart] = useState('line-chart');
   useEffect(() => {
     return () => {
-      document.title = 'Chart Visualisation';
+      document.title = '🏠 Chart Visualisation';
     };
   }, []);
 

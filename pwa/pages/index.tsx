@@ -5,7 +5,7 @@ export default function Example() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   useEffect(() => {
     return () => {
-      document.title = 'Landing Page';
+      document.title = '🏠 Landing Page';
     };
   }, []);
   return (
