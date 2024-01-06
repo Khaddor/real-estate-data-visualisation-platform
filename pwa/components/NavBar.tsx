@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Dialog } from "@headlessui/react";
 
 const navigation = [
@@ -7,7 +7,14 @@ const navigation = [
   { name: "Pie Chart", id: "pie-chart" },
 ];
 
-const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart, activeChart }) => {
+const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
+  const [selectedItem, setSelectedItem] = useState("line-chart");
+
+  const handleItemClick = (itemId) => {
+    setSelectedItem(itemId);
+    setActiveChart(itemId);
+  };
+
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav
@@ -43,9 +50,9 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart, activeChart
           {navigation.map((item) => (
             <button
               key={item.id}
-              onClick={() => setActiveChart(item.id)}
+              onClick={() => handleItemClick(item.id)}
               className={`${
-                activeChart === item.id
+                selectedItem === item.id
                   ? "border-b-2 border-blue-500"
                   : "border-b border-transparent"
               } hover:border-b-2 hover:border-blue-500`}
@@ -86,7 +93,7 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart, activeChart
               <ul className="space-y-2 py-6">
                 {navigation.map((item) => (
                   <li key={item.id}>
-                    <button onClick={() => setActiveChart(item.id)}>
+                    <button onClick={() => handleItemClick(item.id)}>
                       {item.name}
                     </button>
                   </li>
