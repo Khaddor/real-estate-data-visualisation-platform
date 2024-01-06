@@ -72,6 +72,10 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
 
     const data_ready = pie(dataWithPercentages);
 
+    const arcTween = (d: any) => {
+      const interpolate = d3.interpolate({ startAngle: 0, endAngle: 0 }, d);
+      return (t: any) => arc(interpolate(t));
+    };
     const arcGenerator = d3
       .arc<d3.PieArcDatum<VentesData>>()
       .innerRadius(radius * 0.4)
@@ -118,7 +122,10 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
         d3.select(this).transition().duration(50).style("opacity", 1);
 
         div.transition().duration(50).style("opacity", 0);
-      });
+      })
+      .transition()
+      .duration(1000) // Set the duration of the transition
+      .attrTween("d", arcTween);
 
     // Add lines and labels
     const lines = svg

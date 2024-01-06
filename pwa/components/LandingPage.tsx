@@ -24,7 +24,7 @@ const LandingPage = ({ mobileMenuOpen, setMobileMenuOpen }) => {
               L'immobilières en France
             </h1>
             <p className="mt-6 text-lg leading-8 text-gray-600">
-              ImmoVista est une application web innovante offrant une expérience
+              ImmoGraph est une application web innovante offrant une expérience
               immersive dans le monde des ventes immobilières en France. Grâce à
               des composants graphiques avancés, explorez les données détaillées
               de manière visuelle et interactive.
