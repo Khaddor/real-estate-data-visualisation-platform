@@ -7,11 +7,11 @@ const navigation = [
   { name: "Pie Chart", id: "pie-chart" },
 ];
 
-const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
+const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart, activeChart }) => {
   return (
     <header className="absolute inset-x-0 top-0 z-50">
       <nav
-        className="flex items-center justify-between p-6 lg:px-8"
+        className="flex items-center justify-between p-6 lg:px-8 bg-opacity-50 backdrop-filter backdrop-blur-lg"
         aria-label="Global"
       >
         <div className="flex lg:flex-1">
@@ -20,6 +20,7 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
             <img
               className="h-8 w-auto"
               src="https://e7.pngegg.com/pngimages/669/146/png-clipart-house-real-estate-computer-icons-home-estate-agent-house-angle-logo.png"
+              alt=""
             />
           </a>
         </div>
@@ -39,10 +40,16 @@ const Navbar = ({ mobileMenuOpen, setMobileMenuOpen, setActiveChart }) => {
           </button>
         </div>
         <div className="hidden lg:flex lg:gap-x-12 flex-col lg:flex-row">
-          {" "}
-          {/* Updated here */}
           {navigation.map((item) => (
-            <button key={item.id} onClick={() => setActiveChart(item.id)}>
+            <button
+              key={item.id}
+              onClick={() => setActiveChart(item.id)}
+              className={`${
+                activeChart === item.id
+                  ? "border-b-2 border-blue-500"
+                  : "border-b border-transparent"
+              } hover:border-b-2 hover:border-blue-500`}
+            >
               {item.name}
             </button>
           ))}
