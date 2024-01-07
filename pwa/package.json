@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "build:css": "tailwindcss build src/styles/tailwind.css -o public/styles/tailwind.css",
-    "test": "playwright test"
+    "test": "jest"
   },
   "dependencies": {
     "@api-platform/admin": "^3.4.5",
@@ -28,27 +28,48 @@
     "sharp": "^0.33.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.5",
+    "@babel/core": "^7.23.7",
+    "@babel/plugin-syntax-jsx": "^7.23.3",
+    "@babel/preset-env": "^7.23.7",
+    "@babel/preset-react": "^7.23.3",
+    "@babel/preset-typescript": "^7.23.3",
     "@playwright/test": "^1.40.1",
     "@popperjs/core": "^2.11.8",
+    "@testing-library/jest-dom": "^6.2.0",
+    "@testing-library/react": "^14.1.2",
+    "@testing-library/user-event": "^14.5.2",
     "@types/d3": "^7.4.3",
+    "@types/jest": "^29.5.11",
     "@types/node": "^20.10.3",
     "@types/react": "^18.2.41",
     "@types/react-dom": "^18.2.17",
+    "@types/testing-library__react": "^10.2.0",
     "autoprefixer": "^10.4.16",
     "daisyui": "^4.5.0",
     "eslint": "^8.55.0",
     "eslint-config-next": "^14.0.3",
+    "identity-obj-proxy": "^3.0.0",
     "jasmine": "^5.1.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
     "karma": "^6.4.2",
     "karma-chrome-launcher": "^3.2.0",
     "karma-firefox-launcher": "^2.1.2",
     "karma-jasmine": "^5.1.0",
     "tailwindcss": "^3.4.0",
-    "typescript": "^5.3.2"
+    "ts-jest": "^29.1.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
   },
   "peerDependencies": {
     "@babel/core": "^7.19.0",
     "@popperjs/core": "^2.11.6"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "jsdom",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    }
   }
 }
