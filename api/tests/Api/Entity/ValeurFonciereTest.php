@@ -100,4 +100,28 @@ class ValeurFonciereTest extends ApiTestCase
         // Assert that the response status code indicates a validation error (e.g., 400 Bad Request)
         $this->assertEquals(400, $response->getStatusCode());
     }
+
+    public function testPutUpdateData()
+    {
+        // Create a client and send a PUT request to update an existing resource
+        $client = static::createClient();
+        $response = $client->request('PUT', 'https://localhost/valeur_foncieres/1', [
+            'json' => [
+                "identifiant"=> 1,
+                "dateMutation"=> "2023-01-05T00:00:00+00:00",
+                "typeMutation"=> "Vente",
+                "valeurFonciere"=> 1070000,
+                "region"=> "Auvergne-Rhône-Alpes\n",
+                "typeLocal"=> "Appartement",
+                "surface"=> 235
+            ],
+            'headers' => ['accept' => 'application/ld+json']
+        ]);
+
+        // Assert that the response is successful (e.g., 200 OK)
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
+        $this->assertStringContainsString('surface', $response->getContent());
+    }
+
 }
