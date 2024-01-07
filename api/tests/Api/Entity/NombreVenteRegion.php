@@ -25,4 +25,18 @@ class NombreVenteRegionTest extends ApiTestCase
         $this->assertStringContainsString('region', $response->getContent());
         $this->assertStringContainsString('nombreVente', $response->getContent());
     }
+
+    public function testGettersAndSetters()
+    {
+        $ventes = new NombreVenteRegion();
+        $region = 'Normandie';
+        $nbrVentes = 100000;
+        $ventes->setRegion($region);
+        $ventes->setNumberSales($nbrVentes);
+
+        // Verify that the getters return the correct values
+        $this->assertEquals($region, $ventes->getRegion());
+        $this->assertEquals($nbrVentes, $ventes->getNombreVente());
+    }
+
 }
