@@ -59,6 +59,7 @@ const Views = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };
