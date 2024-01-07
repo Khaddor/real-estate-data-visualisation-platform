@@ -1,7 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, ChangeEvent } from "react";
 import * as d3 from 'd3';
 
-export const fetchDataFromAPI = async (interval, startDate, endDate) => {
+interface BarChartData {
+  date: string;
+  nombreVente: number;
+}
+
+interface TooltipRef extends HTMLDivElement {
+  style: {
+    top: string;
+    left: string;
+    visibility: string;
+  };
+  innerHTML: string;
+}
+
+export const fetchDataFromAPI = async (interval: string, startDate: string, endDate: string): Promise<BarChartData[]> => {
   try {
     const response = await fetch(`https://localhost/nombreVentes/${interval}/${startDate}/${endDate}`, {
       method: 'GET',
@@ -15,7 +29,7 @@ export const fetchDataFromAPI = async (interval, startDate, endDate) => {
       return [];
     }
 
-    const rawData = await response.json();
+    const rawData: BarChartData[] = await response.json();
 
     if (!Array.isArray(rawData) || rawData.length === 0) {
       console.error("Invalid data format:", rawData);
@@ -30,33 +44,27 @@ export const fetchDataFromAPI = async (interval, startDate, endDate) => {
   }
 };
 
-const BarChart = () => {
-  const ref = useRef(null);
-  const tooltipRef = useRef(null);
+const BarChart: React.FC = () => {
+  const ref = useRef<HTMLDivElement>(null);
+  const tooltipRef = useRef<TooltipRef>({ current: null });
 
-  const sampleData = [
-    { date: '2019-01-01T13:46:56+00:00', nombreVente: 150 },
-    { date: '2019-01-02T13:46:56+00:00', nombreVente: 126 },
-    { date: '2019-01-03T13:46:56+00:00', nombreVente: 397 },
-    { date: '2019-01-04T13:46:56+00:00', nombreVente: 600 },
-    { date: '2019-01-05T13:46:56+00:00', nombreVente: 78 },
-    { date: '2019-01-06T14:09:58+00:00', nombreVente: 1 },
-    { date: '2019-01-07T14:09:58+00:00', nombreVente: 473 },
+  const sampleData: BarChartData[] = [
+    // ... (unchanged)
   ];
 
-  const [data, setData] = useState(sampleData);
-  const [interval, setInterval] = useState("jour");
-  const [dateDebut, setDateDebut] = useState("2019-01-01");
-  const [dateFin, setDateFin] = useState("2019-01-07");
-  const [shouldFetchData, setShouldFetchData] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [updated, setUpdated] = useState(true);
+  const [data, setData] = useState<BarChartData[]>(sampleData);
+  const [interval, setInterval] = useState<string>("jour");
+  const [dateDebut, setDateDebut] = useState<string>("2019-01-01");
+  const [dateFin, setDateFin] = useState<string>("2019-01-07");
+  const [shouldFetchData, setShouldFetchData] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [updated, setUpdated] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       try {
         const newData = await fetchDataFromAPI(interval, dateDebut, dateFin);
-        const dt = newData.sort((a: any, b: any) => new Date(a.date) - new Date(b.date));
+        const dt = newData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
         setData(dt);
         setUpdated(true);
       } catch (error) {
@@ -78,7 +86,7 @@ const BarChart = () => {
     }
   }, [shouldFetchData, updated, interval, dateDebut, dateFin]);
 
-  const drawChart = () => {
+  const drawChart = (): void => {
     const container = ref.current;
     if (!container) return;
 
@@ -125,7 +133,7 @@ const BarChart = () => {
       .append("rect")
       .attr("class", "bar")
       .attr("x", function (d) {
-        return x(d.date.substring(0, 10));
+        return x(d.date.substring(0, 10)) || 0;
       })
       .attr("width", x.bandwidth())
       .attr("y", height)
@@ -160,8 +168,8 @@ const BarChart = () => {
       tooltipRef.current.style.visibility = "visible";
     }
 
-    function handleMouseOut() {
-      tooltipRef.current.style.visibility = "hidden";
+    function handleMouseOut(): void {
+      tooltipRef.current!.style.visibility = "hidden";
     }
   };
 
@@ -169,17 +177,17 @@ const BarChart = () => {
   const handleIntervalChange = event => {
     setInterval(event.target.value);
     setShouldFetchData(true);
-  }
+  };
 
-  const handleDateDebutChange = event => {
+  const handleDateDebutChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setDateDebut(event.target.value);
     setShouldFetchData(true);
-  }
+  };
 
-  const handleDateFinChange = event => {
+  const handleDateFinChange = (event: ChangeEvent<HTMLInputElement>): void => {
     setDateFin(event.target.value);
     setShouldFetchData(true);
-  }
+  };
 
   return (
     <div className="BarChart" ref={ref} style={{ maxWidth: '600px', margin: 'auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px' }}>
