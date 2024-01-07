@@ -21,3 +21,9 @@ test('test Line Chart', async ({ page }) => {
   await page.getByRole('button', { name: 'Line Chart' }).click();
 
 });
+
+test('test Pie Chart', async ({ page }) => {
+    await page.goto('https://localhost/views');
+    await page.getByRole('button', { name: 'Pie Chart' }).click();
+    await page.getByRole('combobox').selectOption('2021');
+});
