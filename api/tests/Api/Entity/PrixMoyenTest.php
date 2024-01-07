@@ -22,6 +22,24 @@ class PrixMoyenTest extends ApiTestCase
         // Assert that the response is successful
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertStringContainsString('date', $response->getContent());
+        $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
+        $this->assertStringContainsString('prixMoyen', $response->getContent());
+    }
+
+    public function testGettersAndSetters()
+    {
+        // Create an instance of the AveragePricePerMonth class
+        $prixMoyenParMois = new PrixMoyenParMois();
+
+        // Set the date and average price using the setters
+        $date = new \DateTime();
+        $prix = 3949.143;
+        $prixMoyenParMois->setDate($date);
+        $prixMoyenParMois->setPrixMoyen($prix);
+
+        // Verify that the getters return the correct values
+        $this->assertEquals($date, $prixMoyenParMois->getDate());
+        $this->assertEquals($prix, $prixMoyenParMois->getPrixMoyen());
     }
 
 }
