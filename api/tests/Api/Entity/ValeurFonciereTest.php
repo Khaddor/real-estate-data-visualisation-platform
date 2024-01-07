@@ -27,5 +27,35 @@ class ValeurFonciereTest extends ApiTestCase
         $this->assertStringContainsString('surface', $response->getContent());
     }
     
+    public function testGettersAndSetters()
+    {
+        $valeurFonciere = new ValeurFonciere();
 
+        // Create a DateTime object
+        $dateMutation = new \DateTime('2024-01-07');
+        
+        // Test setting and getting the dateMutation property
+        $valeurFonciere->setDateMutation($dateMutation);
+        $this->assertEquals($dateMutation, $valeurFonciere->getDateMutation());
+
+        // Test setting and getting the typeMutation property
+        $valeurFonciere->setTypeMutation('Vente');
+        $this->assertEquals('Vente', $valeurFonciere->getTypeMutation());
+
+        // Test setting and getting the valeurFonciere property
+        $valeurFonciere->setValeurFonciere(100000.50);
+        $this->assertEquals(100000.50, $valeurFonciere->getValeurFonciere());
+
+        // Test setting and getting the region property
+        $valeurFonciere->setRegion('Auvergne-Rhône-Alpes');
+        $this->assertEquals('Auvergne-Rhône-Alpes', $valeurFonciere->getRegion());
+
+        // Test setting and getting the typeLocal property
+        $valeurFonciere->setTypeLocal('Apartment');
+        $this->assertEquals('Apartment', $valeurFonciere->getTypeLocal());
+
+        // Test setting and getting the surface property
+        $valeurFonciere->setSurface(75);
+        $this->assertEquals(75, $valeurFonciere->getSurface());
+    }
 }
