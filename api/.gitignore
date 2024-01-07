@@ -24,3 +24,7 @@
 ### ignore all data files 
 /src/Data/*.txt
 !/src/Data/regions.txt
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
