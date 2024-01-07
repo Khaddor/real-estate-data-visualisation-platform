@@ -17,5 +17,10 @@ describe('Example Component', () => {
     // Ensure that the LandingPage component is rendered
     expect(screen.getByTestId('landing-page-mock')).toBeInTheDocument();
   });
-
+  
+  test('document title is set on mount', () => {
+    render(<Index />);
+    // Ensure that the document title is set correctly
+    expect(document.title).toBe('🏠 Landing Page');
+  });
 });
