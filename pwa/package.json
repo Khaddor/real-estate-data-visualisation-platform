@@ -7,7 +7,8 @@
     "build": "next build  && npm run build:css",
     "start": "next start",
     "lint": "next lint",
-    "build:css": "tailwindcss build src/styles/tailwind.css -o public/styles/tailwind.css"
+    "build:css": "tailwindcss build src/styles/tailwind.css -o public/styles/tailwind.css",
+    "test": "playwright test"
   },
   "dependencies": {
     "@api-platform/admin": "^3.4.5",
