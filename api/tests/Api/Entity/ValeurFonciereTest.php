@@ -135,5 +135,21 @@ class ValeurFonciereTest extends ApiTestCase
         $this->assertEquals(204, $response->getStatusCode());
     }
 
+    public function testGetRequestWithIdentifier()
+    {
+        // Create a client and send a GET request to the API
+        $client = static::createClient();
+        $response = $client->request('GET', 'https://localhost/valeur_foncieres/2', [
+            'headers' => ['accept' => 'application/ld+json']
+        ]);
+        // Assert that the response is successful
+        $this->assertEquals(200, $response->getStatusCode());
+        // Assert that the response is in JSON
+        $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
+        // Assert that the response contains the expected properties
+        $this->assertStringContainsString('region', $response->getContent());
+    }
+
+
 
 }
