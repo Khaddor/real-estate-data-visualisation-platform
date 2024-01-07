@@ -124,4 +124,16 @@ class ValeurFonciereTest extends ApiTestCase
         $this->assertStringContainsString('surface', $response->getContent());
     }
 
+    public function testDeleteRequest()
+    {
+        // Create a client and send a DELETE request to the API
+        $client = static::createClient();
+        $response = $client->request('DELETE', 'https://localhost/valeur_foncieres/1', [
+            'headers' => ['accept' => 'application/ld+json']
+        ]);
+        // Assert that the response is successful
+        $this->assertEquals(204, $response->getStatusCode());
+    }
+
+
 }
