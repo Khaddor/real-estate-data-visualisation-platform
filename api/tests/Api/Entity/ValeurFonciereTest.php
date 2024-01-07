@@ -80,4 +80,24 @@ class ValeurFonciereTest extends ApiTestCase
         $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
         $this->assertStringContainsString('region', $response->getContent());
     }
+
+    public function testPostInvalidData()
+    {
+        // Create a client and send a POST request with invalid data to the API
+        $client = static::createClient();
+        $response = $client->request('POST', 'https://localhost/valeur_foncieres', [
+             'json' => [
+                // surface is not int
+                "dateMutation"=> "2024-01-07T18:11:20.561Z",
+                "typeMutation"=> "Vente",
+                "valeurFonciere"=> 100000,
+                "region"=> "Normandie",
+                "surface"=> 70.5
+            ],
+            'headers' => ['accept' => 'application/ld+json']
+        ]);
+
+        // Assert that the response status code indicates a validation error (e.g., 400 Bad Request)
+        $this->assertEquals(400, $response->getStatusCode());
+    }
 }
