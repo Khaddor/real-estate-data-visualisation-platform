@@ -27,3 +27,8 @@ test('test Pie Chart', async ({ page }) => {
     await page.getByRole('button', { name: 'Pie Chart' }).click();
     await page.getByRole('combobox').selectOption('2021');
 });
+
+test('test Landing Page', async ({ page }) => {
+    await page.goto('https://localhost');
+    await page.getByRole('link', { name: 'Visualiser les données' }).click();
+});
