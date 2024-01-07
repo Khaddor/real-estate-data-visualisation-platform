@@ -58,4 +58,26 @@ class ValeurFonciereTest extends ApiTestCase
         $valeurFonciere->setSurface(75);
         $this->assertEquals(75, $valeurFonciere->getSurface());
     }
+
+    public function testPostValidData()
+    {
+        // Create a client and send a POST request with valid data to the API
+        $client = static::createClient();
+        $response = $client->request('POST', 'https://localhost/valeur_foncieres', [
+            'json' => [
+                "dateMutation"=> "2024-01-07T18:11:20.561Z",
+                "typeMutation"=> "Vente",
+                "valeurFonciere"=> 100000,
+                "region"=> "Normandie",
+                "typeLocal"=> "Appartement",
+                "surface"=> 70
+            ],
+            'headers' => ['accept' => 'application/ld+json']
+        ]);
+
+        // Assert that the response is successful
+        $this->assertEquals(201, $response->getStatusCode());
+        $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
+        $this->assertStringContainsString('region', $response->getContent());
+    }
 }
