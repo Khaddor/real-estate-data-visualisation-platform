@@ -110,16 +110,19 @@ const BarChart: React.FC = () => {
 
     const x = d3.scaleBand()
       .range([0, width])
-      .domain(
-        data.map(function (d) {
-          return d.date.substring(0, 10);
-        })
-      )
+      .domain(data.map(d => d.date.substring(0, 10)))
       .padding(0.2);
+
+    const xAxis = d3.axisBottom(x);
+
+    // Conditionally set x-axis tick values for better readability
+    if (interval === "jour" && data.length > 20) {
+      xAxis.tickValues([]); // Set empty array for tick values
+    }
 
     svg.append("g")
       .attr("transform", `translate(0,${height})`)
-      .call(d3.axisBottom(x))
+      .call(xAxis)
       .selectAll("text")
       .attr("transform", "translate(-10,0)rotate(-45)")
       .style("text-anchor", "end");
@@ -157,12 +160,12 @@ const BarChart: React.FC = () => {
         return (i * 500);
       });
 
-    function handleMouseOver(event: any, d: BarChartData): void {
+    function handleMouseOver(event, d) {
       const tooltipContent = `<strong>Date:</strong> ${d.date.substring(0, 10)}<br/><strong>Nombre Vente:</strong> ${d.nombreVente}`;
-      tooltipRef.current!.innerHTML = tooltipContent;
-      tooltipRef.current!.style.top = `${event.clientY - 100}px`;
-      tooltipRef.current!.style.left = `${event.clientX - 600}px`;
-      tooltipRef.current!.style.visibility = "visible";
+      tooltipRef.current.innerHTML = tooltipContent;
+      tooltipRef.current.style.top = `${event.clientY - 100}px`;
+      tooltipRef.current.style.left = `${event.clientX - 600}px`;
+      tooltipRef.current.style.visibility = "visible";
     }
 
     function handleMouseOut(): void {
@@ -170,7 +173,8 @@ const BarChart: React.FC = () => {
     }
   };
 
-  const handleIntervalChange = (event: ChangeEvent<HTMLSelectElement>): void => {
+
+  const handleIntervalChange = event => {
     setInterval(event.target.value);
     setShouldFetchData(true);
   };

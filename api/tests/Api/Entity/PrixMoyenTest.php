@@ -4,6 +4,8 @@ namespace App\Tests\Api;
 
 use ApiPlatform\Symfony\Bundle\Test\ApiTestCase;
 
+use App\Entity\PrixMoyenParMois;
+
 
 class PrixMoyenTest extends ApiTestCase
 {
@@ -16,25 +18,28 @@ class PrixMoyenTest extends ApiTestCase
                 'Content-Type' => 'application/json',
             ],
         ]);
-      
 
-        // Asserts that the response is a success
-        $this->assertResponseIsSuccessful();
-       
-        // Asserts that the response has the correct JSON structure
-        $this->assertJson($response->getContent());
-
-        // Decode the JSON response
-        $data = json_decode($response->getContent(), true);
-
-        // Assert that the decoded data is an array
-        $this->assertIsArray($data);
-
-
-    
-        
-
-       
-
+        // Assert that the response is successful
+        $this->assertEquals(200, $response->getStatusCode());
+        $this->assertStringContainsString('date', $response->getContent());
+        $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
+        $this->assertStringContainsString('prixMoyen', $response->getContent());
     }
+
+    public function testGettersAndSetters()
+    {
+        // Create an instance of the AveragePricePerMonth class
+        $prixMoyenParMois = new PrixMoyenParMois();
+
+        // Set the date and average price using the setters
+        $date = new \DateTime();
+        $prix = 3949.143;
+        $prixMoyenParMois->setDate($date);
+        $prixMoyenParMois->setPrixMoyen($prix);
+
+        // Verify that the getters return the correct values
+        $this->assertEquals($date, $prixMoyenParMois->getDate());
+        $this->assertEquals($prix, $prixMoyenParMois->getPrixMoyen());
+    }
+
 }
