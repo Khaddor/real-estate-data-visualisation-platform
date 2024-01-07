@@ -182,7 +182,7 @@ const PieChart1: React.FC<PieChartProps> = ({ data }) => {
 
 const PieChart = () => {
   const [data, setData] = useState<VentesData[]>([]);
-  const [year, setYear] = useState("2018");
+  const [year, setYear] = useState("2019");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
