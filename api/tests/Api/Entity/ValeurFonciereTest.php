@@ -150,6 +150,29 @@ class ValeurFonciereTest extends ApiTestCase
         $this->assertStringContainsString('region', $response->getContent());
     }
 
-
+    public function testPatchRequest()
+    {
+        // Create a client and send a PATCH request to the API
+        $client = static::createClient();
+        $response = $client->request('PATCH', 'https://localhost/valeur_foncieres/4', [
+            'headers' => ['Content-Type' => 'application/merge-patch+json','accept' => 'application/ld+json'],
+            'json' => [
+                "dateMutation"=> "2023-01-05T00:00:00+00:00",
+                "typeMutation"=> "Vente",
+                "valeurFonciere"=> 107000,
+                "region"=> "Auvergne-Rhône-Alpes\n",
+                "typeLocal"=> "Appartement",
+                "surface"=> 237
+            ]
+        ]);
+        // Assert that the response is successful
+        $this->assertEquals(200, $response->getStatusCode());
+        // Assert that the response is in JSON
+        $this->assertStringContainsString('application/ld+json', $response->getHeaders()['content-type'][0]);
+        // Assert that the response contains the expected properties
+        $this->assertStringContainsString('region', $response->getContent());
+        $this->assertStringContainsString('valeurFonciere', $response->getContent());
+        $this->assertStringContainsString('surface', $response->getContent());
+    }
 
 }
