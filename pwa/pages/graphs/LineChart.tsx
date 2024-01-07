@@ -140,8 +140,10 @@ const LineChart: React.FC<LineChartProps> = ({ data }) => {
         const tooltipWidth = tooltipRef.current.offsetWidth;
         const tooltipHeight = tooltipRef.current.offsetHeight;
         const mouseXOffset = 10;
+        const mouseYOffset = 10;
       
          const mouseY = event.clientY + window.scrollY;
+        // const mouseX = event.clientX + window.scrollX;
       
         const tooltipLeft = mouseX - tooltipWidth / 2 + mouseXOffset;
       
